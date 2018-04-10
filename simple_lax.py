@@ -102,3 +102,20 @@ def main():
 
     plot_simple_lax(T,X,delta_x,grid_rho,grid_v)
 main()
+
+
+"""
+#print(U_exact, U)
+    len1=len(U)
+    X=np.linspace(0, 1, len1)
+    #plt.figure()
+    #plt.plot(X, U_exact, label="Exact")
+    #plt.plot(X, U, label="approx")
+    #plt.legend()
+    #plt.show()
+    len2=len(U_exact)
+    number=(len2-1)/(len1-1)
+    newlist=np.zeros(len1)
+    for i in range(len1):
+        newlist[i]=U_exact[int(i*number)]
+"""
