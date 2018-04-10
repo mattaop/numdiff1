@@ -24,11 +24,12 @@ def f2_simple_lax(rho_last, v_last, rho_temp, v_temp, delta_t, delta_x,j, tau, V
            -(rho_last[j]/tau)*((V0*(1-rho_last[j]/rho_max))/(1+E*(rho_last[j]/rho_max)**4)-v_last[j])+\
            (rho_last[j+1]-rho_last[j-1])/(2*delta_x)*c**2-my*(v_last[j+1]-2*v_last[j]+v_last[j+1])/delta_x**2
 
-def f1_simple_lax(rho_last, v_last, rho_temp, v_temp, delta_t, delta_x,j, time, position,sigma):
+def f1_simple_lax(rho_last, v_last, rho_temp, v_temp, delta_t, delta_x, j, time, position, sigma):
     return rho_temp / delta_t - 1 / (2 * delta_t) * (rho_last[j + 1] + rho_last[j - 1])\
            + v_last[j] / (2 * delta_x) * (rho_last[j + 1] - rho_last[j - 1]) + rho_last[j] / (2 * delta_x) * (
                        v_last[j + 1] - v_last[j - 1])\
            - q_in(time) * phi(position, sigma)
+
 #no need
 '''def jacobi_matrix(rho_last, v_last, rho_temp, v_temp, delta_t, delta_x, j, V0, tau, rho_max, E):
     j1=1/delta_t+(v_last[j+1]-v_last[j-1])/(2*delta_x)
