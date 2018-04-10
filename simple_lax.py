@@ -5,8 +5,7 @@ def safe_v(rho, V0, rho_max, E):
     return V0*(1-rho/rho_max)/(1+E*(rho/rho_max)**4)
 
 def q_in(time):
-    return 50
-
+    return 10
 def phi(x, sigma):
 	return (2*np.pi*sigma**2)**(-0.5)*np.exp(-x**2/(2*sigma**2))
 
@@ -18,7 +17,7 @@ def rho_next_simple_lax(rho_last, v_last, delta_t, delta_x, j, time, position,si
 def v_next_simple_lax(rho_last, v_last, delta_t, delta_x,j, tau, V0, rho_max, E, c, my):
     return ((v_last[j+1]+v_last[j-1])/2-v_last[j]*delta_t*(v_last[j+1]-v_last[j-1])/(2*delta_x))\
            +(delta_t/tau)*((V0*(1-rho_last[j]/rho_max))/(1+E*(rho_last[j]/rho_max)**4)-v_last[j])-\
-           (rho_last[j+1]-rho_last[j-1])*delta_t/(rho_last[j]*2*delta_x)*c**2+my*delta_t*(v_last[j+1]-2*v_last[j]+v_last[j+1])/(rho_last[j]*delta_x**2)
+           (rho_last[j+1]-rho_last[j-1])*delta_t/(rho_last[j]*2*delta_x)*c**2+my*delta_t*(v_last[j+1]-2*v_last[j]+v_last[j-1])/(rho_last[j]*delta_x**2)
 
 def f2_simple_lax(rho_last, v_last, rho_temp, v_temp, delta_t, delta_x,j, tau, V0, rho_max, E, c, my):
     return rho_last[j]*(v_temp/delta_t - (v_last[j+1]+v_last[j-1])/(2*delta_t)+v_last[j]*(v_last[j+1]-v_last[j-1])/(2*delta_x))\
@@ -69,19 +68,22 @@ def solve_simple_lax(grid_rho, grid_v, T, X, rho0,delta_t,delta_x,L,sigma,V0,rho
                                                    delta_t,delta_x ,time,L,sigma, rho0,V0,rho_max,E,tau,c,my)
     return grid_rho,grid_v
 
-def plot_simple_lax(T,X,delta_x,grid_rho):
+def plot_simple_lax(T,X,delta_x,grid_rho,grid_v):
     x=np.linspace(-X*delta_x,X*delta_x,X)
     plt.plot(x,grid_rho[T-1])
     plt.show()
+    plt.figure()
+    plt.plot(x,grid_v[T-1])
+    plt.show()
 
 def main():
-    T=100
+    T=5000
     X=50
     V0=120
     rho_max=140
     E=100
-    rho0=10
-    delta_t=0.01
+    rho0=40
+    delta_t=0.001
     delta_x=37  #meter
     L=delta_x*X #meter
     sigma=56.7
@@ -97,5 +99,5 @@ def main():
     #print(grid_v)
     #print(grid_rho)
 
-    plot_simple_lax(T,X,delta_x,grid_rho)
+    plot_simple_lax(T,X,delta_x,grid_rho,grid_v)
 main()
