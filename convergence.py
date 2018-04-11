@@ -30,6 +30,7 @@ def calculate_spatial_error(iteration):
         newlist[i]=U_exact[int(i*number)]
 """
 
+
 #Laget kun for å funke for Simple-Lax foreløpig:
 def time_error(X, rho0,delta_x,L,sigma,V0,rho_max,E,tau,c,my,rho_ex,v_ex,T_max,T_ex):
     n = 12 #
@@ -103,6 +104,5 @@ def time_convergence():
     plt.show()   
     
 time_convergence()
-        
         
         
