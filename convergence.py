@@ -41,7 +41,7 @@ def time_error(X, rho0,delta_x,L,sigma,V0,rho_max,E,tau,c,my,rho_ex,v_ex,T_max,T
         T = 2**(i+1) #Number of time points in each iteration
         delta_t = T_max/(T-1) #delta t in each iteration
         print(delta_t)
-        #Initialization of a new grid:
+        #Initialization of a new grid - Skal vi lage en egen funksjon til dette?:
         grid_rho=np.zeros((T,X))
         grid_v=np.zeros((T,X))
         grid_rho[0]=np.ones(X)*rho0
@@ -57,7 +57,7 @@ def time_error(X, rho0,delta_x,L,sigma,V0,rho_max,E,tau,c,my,rho_ex,v_ex,T_max,T
     return delta_t_list,error_list_rho,error_list_v
 
 def time_convergence():
-    #Konstanter lagt inn her kun for å teste:
+    #Konstanter lagt inn her kun for å teste, kan kanskje bare lage en egen fil med alle konstantene:
     X=50
     V0=120
     rho_max=140
