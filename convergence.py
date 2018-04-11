@@ -39,7 +39,7 @@ def time_error(X, rho0,delta_x,L,sigma,V0,rho_max,E,tau,c,my,rho_ex,v_ex,T_max,T
     delta_t_list = np.zeros(n)
     for i in range(n):
         T = 2**(i+1) #Number of time points in each iteration
-        delta_t = T_max/(T+1) #delta t in each iteration
+        delta_t = T_max/(T-1) #delta t in each iteration
         print(delta_t)
         #Initialization of a new grid:
         grid_rho=np.zeros((T,X))
@@ -71,7 +71,7 @@ def time_convergence():
     tau=0.5
     c=54
 
-    T_max = 5 #Time until we stop the simulation
+    T_max = 5 #Time (minutes?) until we stop the simulation
     T_ex = 10000 #Number of time steps in the reference (exact) solution 
     
     #Initialization of exact solution:
@@ -93,6 +93,8 @@ def time_convergence():
     plt.figure()
     plt.plot(delta_t_list,error_rho)
     plt.title("Error rho")
+    plt.xlabel(r"$\delta t$")
+    plt.ylabel("Error")
     plt.semilogx()
     plt.semilogy()
     plt.show()  
