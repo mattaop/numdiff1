@@ -78,6 +78,7 @@ def plot_simple_lax(T,X,delta_x,grid_rho,grid_v):
     plt.show()
 
 def main():
+    max_time=5*60 #seconds
     T=5000
     X=50
     V0=120
@@ -101,6 +102,6 @@ def main():
     #print(grid_rho)
 
     plot_simple_lax(T,X,delta_x,grid_rho,grid_v)
-main()
+#main()
 
 
