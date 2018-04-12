@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import simple_lax as sl
-
+import upwind as up
 m=8 #2^m, gives number of points in space
 max_time=5*60 #seconds
 T=1000
@@ -71,7 +71,8 @@ def spatial_convergence(m,solver,grid_rho, grid_v, T, X, rho0,delta_t,delta_x,L,
 
 
 def plot_convergence():
-    conv_list,step_length_list=spatial_convergence(m,sl.solve_simple_lax,grid_rho, grid_v, T, X, rho0,delta_t,delta_x,L,sigma,V0,rho_max,E,tau,c,my)
+
+    conv_list,step_length_list=spatial_convergence(m,up.solve_upwind,grid_rho, grid_v, T, X, rho0,delta_t,delta_x,L,sigma,V0,rho_max,E,tau,c,my)
     print(len(conv_list),len(step_length_list))
     plt.loglog(step_length_list,conv_list[0])
     plt.loglog(step_length_list,conv_list[1])
