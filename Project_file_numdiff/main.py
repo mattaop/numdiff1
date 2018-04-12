@@ -13,7 +13,10 @@ if __name__ == "__main__":
 
     Master_Flag = {
                     0: 'Simple Lax',
-                    1: 'Upwind'
+                    1: 'Upwind',
+                    2: 'Lax Wendroff',
+                    3: 'Time Convergence'
+
 
 
 
@@ -30,3 +33,9 @@ if __name__ == "__main__":
         up_v.plot_upwind(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:, :, 0])
         up_v.plot_upwind(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:, :, 1])
 
+    elif Master_Flag=='Lax Wendroff':
+        grid_u = lw.solve_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_t, c.delta_x)
+        lw.plot_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:, :, 0])
+        lw.plot_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:, :, 1])
+
+    elif Master_Flag=='Time Convergence':
