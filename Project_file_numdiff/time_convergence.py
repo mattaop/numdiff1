@@ -11,8 +11,8 @@ import constants as c
 
 #solve_simple_lax(time_points, space_points, rho0, delta_t,delta_x)
 #Laget kun for å funke for Simple-Lax foreløpig:
-def time_error(solver, space_points, rho0,delta_x,T_max,T_ex,u_ex):
-    n = 8 #
+def time_error(solver, space_points, delta_x,T_max,T_ex,u_ex):
+    n = 12 #
     error_list_rho = np.zeros(n)
     error_list_v = np.zeros(n)
     delta_t_list = np.zeros(n)
@@ -31,7 +31,7 @@ def time_error(solver, space_points, rho0,delta_x,T_max,T_ex,u_ex):
 def time_convergence():
 
     T_max = 5 #Time (minutes?) until we stop the simulation
-    T_ex = 1000 #Number of time steps in the reference (exact) solution 
+    T_ex = 10000 #Number of time steps in the reference (exact) solution 
     
     delta_t_min = T_max/(T_ex-1) #The delta T-value used in the exact solution
     
@@ -53,31 +53,5 @@ def time_convergence():
     plt.legend()
     plt.show()  
     
-    """
-    grid_rho=np.zeros((T_ex,X))
-    grid_v=np.zeros((T_ex,X))
-    grid_rho[0]=np.ones(X)*rho0
-    grid_v[0]=up.safe_v(grid_rho[0], V0, rho_max, E)
-    
-    delta_t_min = T_max/(T_ex-1) #The delta T-value used in the exact solution
-    
-    rho_ex,v_ex = up.solve_upwind(grid_rho, grid_v, T_ex, X, rho0,delta_t_min,delta_x,L,sigma,V0,rho_max,E,tau,c,my)
-    print(rho_ex)
-    
-    delta_t_list,error_rho,error_v = time_error(up.solve_upwind,X,         rho0,delta_x,L,sigma,V0,rho_max,E,tau,c,my,rho_ex,v_ex,T_max, T_ex)
-    print(error_rho)
-    print(error_v)
-    
-    print(delta_t_list)
-    plt.figure()
-    plt.plot(delta_t_list,error_rho,label=r"$\rho$")
-    plt.plot(delta_t_list,error_v,label= "v")
-    plt.title("Convergence plot in time")
-    plt.xlabel(r"$\Delta t$")
-    plt.ylabel("Error")
-    plt.semilogx()
-    plt.semilogy()
-    plt.legend()
-    plt.show()  
-    """
+def plot_time_convergence(solver)
 time_convergence()
