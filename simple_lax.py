@@ -44,6 +44,7 @@ def initialize_grid(time_points, space_points, rho0):
 def solve_simple_lax(time_points, space_points, rho0, delta_t,delta_x):
     grid_rho,grid_v = initialize_grid(time_points, space_points, rho0)
     for i in range(1,time_points):
+        print(i)
         time=i*delta_t
         grid_rho[i], grid_v[i]=one_step_simple_lax(grid_rho[i-1],grid_v[i-1],space_points,
                                                    delta_t,delta_x ,time)
@@ -51,6 +52,7 @@ def solve_simple_lax(time_points, space_points, rho0, delta_t,delta_x):
 
 def plot_simple_lax(T,X,delta_x,grid_rho,grid_v):
     x=np.linspace(-X*delta_x,X*delta_x,X)
+    plt.figure()
     plt.plot(x,grid_rho[T-1])
     plt.show()
     plt.figure()
