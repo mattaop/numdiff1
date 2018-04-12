@@ -61,8 +61,16 @@ def one_step_simple_lax(rho_last, v_last, X, delta_t,delta_x ,time,L,sigma, rho0
 
     return rho_next, v_next
 
-def solve_simple_lax(grid_rho, grid_v, T, X, rho0,delta_t,delta_x,L,sigma,V0,rho_max,E,tau,c,my):
+def initialize_grid(T, X, rho0, V0, rho_max, E):
+    grid_rho=np.zeros((T,X))
+    grid_v=np.zeros((T,X))
+    grid_rho[0]=np.ones(X)*rho0
+    grid_v[0]=safe_v(grid_rho[0], V0, rho_max, E)
+    return grid_rho,grid_v
 
+
+def solve_simple_lax(T, X, rho0,delta_t,delta_x,L,sigma,V0,rho_max,E,tau,c,my):
+    grid_rho,grid_v = initialize_grid(T, X, rho0, V0, rho_max, E)
     for i in range(1,T):
         time=i*delta_t
         grid_rho[i], grid_v[i]=one_step_simple_lax(grid_rho[i-1],grid_v[i-1],X,
@@ -93,11 +101,8 @@ def main():
     tau=0.5
     c=54
 
-    grid_rho=np.zeros((T,X))
-    grid_v=np.zeros((T,X))
-    grid_rho[0]=np.ones(X)*rho0
-    grid_v[0]=safe_v(grid_rho[0], V0, rho_max, E)
-    solve_simple_lax(grid_rho, grid_v, T, X, rho0,delta_t,delta_x,L,sigma,V0,rho_max,E,tau,c,my)
+
+    grid_rho,grid_v=solve_simple_lax(T, X, rho0,delta_t,delta_x,L,sigma,V0,rho_max,E,tau,c,my)
     #print(grid_v)
     #print(grid_rho)
 

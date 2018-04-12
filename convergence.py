@@ -129,19 +129,6 @@ def time_error(solver, X, rho0,delta_x,L,sigma,V0,rho_max,E,tau,c,my,rho_ex,v_ex
     return delta_t_list,error_list_rho,error_list_v
 
 def time_convergence():
-    #Konstanter lagt inn her kun for å teste, kan kanskje bare lage en egen fil med alle konstantene:
-    X=50
-    V0=120
-    rho_max=140
-    E=100
-    rho0=40
-    delta_t=0.001
-    delta_x=37  #meter
-    L=delta_x*X #meter
-    sigma=56.7
-    my=0
-    tau=0.5
-    c=54
 
     T_max = 5 #Time (minutes?) until we stop the simulation
     T_ex = 10000 #Number of time steps in the reference (exact) solution 
