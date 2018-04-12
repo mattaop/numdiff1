@@ -6,33 +6,6 @@ import upwind_vectorized as up_v
 
 import upwind as up
 import constants as c
-<<<<<<< HEAD:convergence.py
-"""
-=======
-
->>>>>>> 2a5648f8006a5e898ff75f1ca2df4bc6281b6e4d:Project_file_numdiff/convergence.py
-m=8 #2^m, gives number of points in space
-max_time=5*60 #seconds
-T=1000
-X=2**(m)
-V0=120
-rho_max=140
-E=100
-rho0=40
-L=5000 #meter
-delta_t=0.001
-delta_x=L/(X-1)  #meter
-
-sigma=56.7
-my=600
-tau=0.5
-c=54
-grid_rho=np.zeros((T,X))
-grid_v=np.zeros((T,X))
-grid_rho[0]=np.ones(X)*rho0
-grid_v[0]=sl.safe_v(grid_rho[0], V0, rho_max, E)
-"""
-
 
 def spatial_convergence(solver,grid_rho, grid_v, T, X,delta_t,delta_x):
     convergence_list=np.zeros((2,c.M+1))
@@ -54,21 +27,18 @@ def spatial_convergence(solver,grid_rho, grid_v, T, X,delta_t,delta_x):
 
         #print(new_exact_list)
         delta_x = c.L/(len_points-1)    #with endpoints
-        print(delta_x)
+        #print(delta_x)
         step_length_list[i-1]=delta_x
 
-        grid_rho = np.zeros((c.TIME_POINTS, len_points))
-        grid_v = np.zeros((c.TIME_POINTS, len_points))
-        grid_rho[0] = np.ones(len_points) * c.RHO_0
-        grid_v[0] = sl.safe_v(grid_rho[0], c.V0, c.RHO_MAX, c.E)
+        grid_rho,grid_v=c.initialize_grid(T,X,c.RHO_0)
 
         rho_i,v_i = solver(grid_rho, grid_v, c.TIME_POINTS, len_points,delta_t,delta_x)
         i_list = np.array([rho_i[-1], v_i[-1]])
 
         convergence_list[0][i-1]=np.linalg.norm(new_exact_list[0]-i_list[0],np.inf)
         convergence_list[1][i-1] = np.linalg.norm(new_exact_list[1] - i_list[1],np.inf)
-        print(len(convergence_list[0]), len(step_length_list))
-        x_list2=np.linspace(-L,L,len(new_exact_list[0]))
+        #print(len(convergence_list[0]), len(step_length_list))
+        x_list2=np.linspace(-c.L,c.L,len(new_exact_list[0]))
         plt.plot(x_list,exact_list[0])
         plt.plot(x_list2,i_list[0])
         plt.show()
@@ -78,35 +48,14 @@ def spatial_convergence(solver,grid_rho, grid_v, T, X,delta_t,delta_x):
 
 def plot_convergence():
     conv_list,step_length_list=spatial_convergence(m,up.solve_upwind,grid_rho, grid_v, c.TIME_POINTS, x.SPACE_POINTS)
-    print(len(conv_list),len(step_length_list))
+    #print(len(conv_list),len(step_length_list))
     plt.loglog(step_length_list,conv_list[0])
     plt.loglog(step_length_list,conv_list[1])
     plt.show()
 
-#plot_convergence()
+plot_convergence()
 
 
-<<<<<<< HEAD:convergence.py
-
-"""
-#print(U_exact, U)
-    len1=len(U)
-    X=np.linspace(0, 1, len1)
-    #plt.figure()
-    #plt.plot(X, U_exact, label="Exact")
-    #plt.plot(X, U, label="approx")
-    #plt.legend()
-    #plt.show()
-    len2=len(U_exact)
-    number=(len2-1)/(len1-1)
-    newlist=np.zeros(len1)
-    for i in range(len1):
-        newlist[i]=U_exact[int(i*number)]
-"""
-
-#solve_simple_lax(time_points, space_points, rho0, delta_t,delta_x)
-=======
->>>>>>> 2a5648f8006a5e898ff75f1ca2df4bc6281b6e4d:Project_file_numdiff/convergence.py
 #Laget kun for å funke for Simple-Lax foreløpig:
 def time_error(solver, space_points, rho0,delta_x,T_max,T_ex,rho_ex,v_ex):
     n = 8 #
@@ -116,7 +65,7 @@ def time_error(solver, space_points, rho0,delta_x,T_max,T_ex,rho_ex,v_ex):
     for i in range(n):
         time_points = 2**(i+1) #Number of time points in each iteration
         delta_t = T_max/(time_points-1) #delta t in each iteration
-        print(delta_t)
+        #print(delta_t)
         #Initialization of a new grid - Skal vi lage en egen funksjon til dette?:
         rho, v = solver(time_points, space_points, rho0,delta_t,delta_x)
         #print(rho_ex[T_ex-1])
@@ -136,13 +85,13 @@ def time_convergence():
     delta_t_min = T_max/(T_ex-1) #The delta T-value used in the exact solution
     
     rho_ex,v_ex = sl.solve_simple_lax(T_ex, c.SPACE_POINTS, c.RHO_0,delta_t_min,c.delta_x)
-    print(rho_ex)
+    #print(rho_ex)
     
     delta_t_list,error_rho,error_v = time_error(sl.solve_simple_lax,c.SPACE_POINTS,c.RHO_0,c.delta_x,T_max, T_ex,rho_ex,v_ex)
-    print(error_rho)
-    print(error_v)
+    #print(error_rho)
+    #print(error_v)
     
-    print(delta_t_list)
+    #print(delta_t_list)
     plt.figure()
     plt.plot(delta_t_list,error_rho,label=r"$\rho$")
     plt.plot(delta_t_list,error_v,label= "v")
@@ -181,6 +130,6 @@ def time_convergence():
     plt.legend()
     plt.show()  
     """
-time_convergence()
+#time_convergence()
         
         

@@ -7,6 +7,7 @@ import upwind_vectorized as up_v
 
 #import upwind as up
 import constants as c
+import lax_wendroff as lw
 
 
 #solve_simple_lax(time_points, space_points, rho0, delta_t,delta_x)
@@ -56,5 +57,6 @@ def plot_time_convergence(solver):
     plt.show() 
 
 #plot_time_convergence(sl_v.solve_simple_lax)
-plot_time_convergence(up_v.solve_upwind)
+#plot_time_convergence(up_v.solve_upwind)
+plot_time_convergence(lw.solve_simple_lax)
     
