@@ -1,24 +1,31 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 import constants as c
+from matplotlib import cm
 
 def safe_v(rho):
     return c.V0*(1-rho/c.RHO_MAX)/(1+c.E*(rho/c.RHO_MAX)**4)
 
 def q_in(time):
-    return 2000
+    if time<40:
+        return 2
+    elif (time>80) and (time<120):
+        return 2
+    else:
+        return 0
 def phi(x):
 	return (2*np.pi*c.SIGMA**2)**(-0.5)*np.exp(-x**2/(2*c.SIGMA**2))
 
 
 def rho_next_simple_lax(rho_last, v_last, delta_t, delta_x, j, time, position):
-    return  1/2*(rho_last[j+1]+rho_last[j-1]) - v_last[j]*delta_t/(2*delta_x)*(rho_last[j+1]-rho_last[j-1])-\
-            rho_last[j]*delta_t/(2*delta_x)*(v_last[j+1]- v_last[j-1]) + delta_t*q_in(time)*phi(position)
+    return  min(c.RHO_MAX,1/2*(rho_last[j+1]+rho_last[j-1]) - v_last[j]*delta_t/(2*delta_x)*(rho_last[j+1]-rho_last[j-1])-\
+            rho_last[j]*delta_t/(2*delta_x)*(v_last[j+1]- v_last[j-1]) + delta_t*q_in(time)*phi(position))
 
 def v_next_simple_lax(rho_last, v_last, delta_t, delta_x,j):
-    return ((v_last[j+1]+v_last[j-1])/2-v_last[j]*delta_t*(v_last[j+1]-v_last[j-1])/(2*delta_x))\
+    return max(0,((v_last[j+1]+v_last[j-1])/2-v_last[j]*delta_t*(v_last[j+1]-v_last[j-1])/(2*delta_x))\
            +(delta_t/c.TAU)*((c.V0*(1-rho_last[j]/c.RHO_MAX))/(1+c.E*(rho_last[j]/c.RHO_MAX)**4)-v_last[j])-\
-           (rho_last[j+1]-rho_last[j-1])*delta_t/(rho_last[j]*2*delta_x)*c.C**2+c.MY*delta_t*(v_last[j+1]-2*v_last[j]+v_last[j-1])/(rho_last[j]*delta_x**2)
+           (rho_last[j+1]-rho_last[j-1])*delta_t/(rho_last[j]*2*delta_x)*c.C**2+c.MY*delta_t*(v_last[j+1]-2*v_last[j]+v_last[j-1])/(rho_last[j]*delta_x**2))
 """
 def f2_simple_lax(rho_last, v_last, rho_temp, v_temp, delta_t, delta_x,j, tau, V0, rho_max, E, c, my):
     return rho_last[j]*(v_temp/delta_t - (v_last[j+1]+v_last[j-1])/(2*delta_t)+v_last[j]*(v_last[j+1]-v_last[j-1])/(2*delta_x))\
@@ -51,8 +58,8 @@ def f1_simple_lax(rho_last, v_last, rho_temp, v_temp, delta_t, delta_x, j, time,
 def one_step_simple_lax(rho_last, v_last, X, delta_t,delta_x ,time):
     rho_next=np.zeros(X)
     v_next=np.zeros(X)
-    rho_next[0]=c.RHO_0
-    v_next[0]=safe_v(c.RHO_0)
+    rho_next[0]=rho_last[1]
+    v_next[0]=safe_v(rho_last[1])
     for j in range(1,X-1):
         position=j*delta_x-c.L/2
         rho_next[j], v_next[j]=rho_next_simple_lax(rho_last,v_last,delta_t,delta_x, j ,time,position),\
@@ -70,7 +77,18 @@ def solve_simple_lax(grid_rho, grid_v, T, X,delta_t,delta_x):
                                                    delta_t,delta_x ,time)
     return grid_rho,grid_v
 
-def plot_simple_lax(T,X,delta_x,grid_rho,grid_v):
+def plot_simple_lax(T,delta_t,X,delta_x,grid_rho,grid_v):
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+    x=np.arange(-X*delta_x/2,X*delta_x/2,delta_x)
+    y=np.arange(0,T*delta_t,delta_t)
+    x,y=np.meshgrid(x,y)
+    ax.plot_surface(x, y, grid_rho,cmap=cm.coolwarm)
+
+    plt.show()
+
+def plot_simple_lax_3d(T,delta_t,X,delta_x,grid_rho,grid_v):
+
     x=np.linspace(-X*delta_x,X*delta_x,X)
     plt.plot(x,grid_rho[T-1])
     plt.show()
@@ -87,7 +105,8 @@ def main():
     #print(grid_v)
     #print(grid_rho)
 
-    plot_simple_lax(c.TIME_POINTS,c.SPACE_POINTS,c.delta_x,grid_rho,grid_v)
+    plot_simple_lax(c.TIME_POINTS,c.delta_t,c.SPACE_POINTS,c.delta_x,grid_rho,grid_v)
+    plot_simple_lax_3d(c.TIME_POINTS, c.delta_t, c.SPACE_POINTS, c.delta_x, grid_rho, grid_v)
 main()
 
 
