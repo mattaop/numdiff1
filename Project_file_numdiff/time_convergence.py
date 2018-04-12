@@ -61,6 +61,9 @@ def plot_time_convergence(solver):
     plt.legend()
     plt.show() 
 
-#plot_time_convergence(sl_v.solve_simple_lax)
-#plot_time_convergence(up_v.solve_upwind)
+print("Lax Fredrich")
+plot_time_convergence(sl_v.solve_simple_lax)
+print("Upwind")
+plot_time_convergence(up_v.solve_upwind)
+print("Lax Wendroff")
 plot_time_convergence(lw.solve_lax_wendroff)
