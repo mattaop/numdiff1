@@ -4,10 +4,15 @@ import numpy as np
 
 M=6
 MAX_TIME=5*60 #seconds
+<<<<<<< HEAD
 #TIME_POINTS=1000
 TIME_POINTS=10
 SPACE_POINTS=5
 #SPACE_POINTS=2**(M)
+=======
+TIME_POINTS= 1000
+SPACE_POINTS=2**(M)
+>>>>>>> 30073c4476db68052eeb111ceb0b193c0af79f11
 L=5000 #meter
 
 delta_t=0.001
