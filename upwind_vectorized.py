@@ -40,7 +40,6 @@ def one_step_upwind(u_last, X, delta_t, delta_x ,time, L, sigma, rho0, V0, rho_m
         position=j*delta_x-L/2
         u_next[j] = u_next_upwind(u_last, delta_t, delta_x, j, time, position, sigma, tau, V0, rho_max, E, c, my)
     u_next[X-1]=2*u_next[X-2]-u_next[X-3]
-
     return u_next
 
 def solve_upwind(T, X, rho0, delta_t, delta_x, L, sigma, V0, rho_max, E, tau, c, my):
@@ -57,13 +56,13 @@ def plot_upwind(T,X,delta_x,grid_rho):
 
 
 def main():
-    T = 100
+    T = 200
     X = 100
     V0 = 80
     rho_max = 140
     E = 100
     rho0 = 10
-    delta_t = 0.01
+    delta_t = 10**(-3)*6
     delta_x = 20  # meter
     L = delta_x * X  # meter
     sigma = 56.7
@@ -74,4 +73,5 @@ def main():
     grid_u = solve_upwind(T, X, rho0, delta_t, delta_x, L, sigma, V0, rho_max, E, tau, c, my)
 
     plot_upwind(T, X, delta_x, grid_u[:,:,0])
+    plot_upwind(T, X, delta_x, grid_u[:,:,1])
 main()
