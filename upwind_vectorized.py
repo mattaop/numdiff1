@@ -17,7 +17,10 @@ def f(u_last, c, j):
 
 def s(time, position, sigma, tau, u_last, rho_max, delta_t, delta_x, V0, j ,E, my):
     s_step = np.zeros(2)
-    s_step[:] = q_in(time)*phi(position,sigma), (1/tau)*((V0*(1-u_last[j,0]/rho_max))/(1+E*(u_last[j,0]/rho_max)**4)-u_last[j,1])+my*delta_t*(u_last[j+1,1]-2*u_last[j,1]+u_last[j-1,1])/(u_last[j,0]*delta_x**2)
+    s_step[:] = q_in(time)*phi(position,sigma), (1/tau)*((V0*(1-u_last[j,0]/rho_max))/(1+E*(u_last[j,0]/rho_max)**4)\
+                                                         -u_last[j,1])+my*delta_t*(u_last[j+1,1]-2*u_last[j,1]\
+                                                        +u_last[j-1,1])/(u_last[j,0]*delta_x**2)
+
     return s_step
 
 def u_next_upwind(u_last, delta_t, delta_x, j, time, position, sigma, tau, V0, rho_max, E, c, my):
