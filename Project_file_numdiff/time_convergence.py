@@ -6,9 +6,6 @@ import upwind_vectorized as up_v
 import constants as c
 import lax_wendroff as lw
 
-
-#solve_simple_lax(time_points, space_points, rho0, delta_t,delta_x)
-
 def time_error(solver, space_points, delta_x,T_max,T_ex,u_ex):
     n = 12 #
     error_list_rho = np.zeros(n)
@@ -37,8 +34,6 @@ def time_convergence(solver):
     delta_t_min = T_max/(T_ex-1) #The delta T-value used in the exact solution
     
     u_ex = solver(T_ex, c.SPACE_POINTS,delta_t_min,c.delta_x)
-
-    #print(u_ex)
 
     delta_t_list,error_rho,error_v = time_error(solver,c.SPACE_POINTS,c.delta_x,T_max, T_ex,u_ex)
     return delta_t_list, error_rho,error_v
