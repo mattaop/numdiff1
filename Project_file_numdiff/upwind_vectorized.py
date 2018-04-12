@@ -22,7 +22,7 @@ def one_step_upwind(u_last, X, delta_t, delta_x ,time):
     u_next = np.zeros((X,2))
     u_next[0,:] = c.RHO_0, c.safe_v(c.RHO_0)
     for j in range(1,X-1):
-        position=j*delta_x-c.L/2
+        position=j*delta_x-c.L
         u_next[j] = u_next_upwind(u_last, delta_t, delta_x, j, time, position)
     u_next[X-1]=2*u_next[X-2]-u_next[X-3]
     return u_next
@@ -44,4 +44,4 @@ def main():
     grid_u = solve_upwind(c.TIME_POINTS, c.SPACE_POINTS, c.delta_t, c.delta_x)
     plot_upwind(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,0])
     plot_upwind(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,1])
-main()
+#main()
