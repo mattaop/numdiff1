@@ -51,6 +51,7 @@ def solve_simple_lax(T, X, delta_t, delta_x):
 
 def plot_simple_lax(T, X, delta_x, grid_u):
     x=np.linspace(-X*delta_x,X*delta_x,X)
+    plt.figure()
     plt.plot(x,grid_u[T-1])
     plt.show()
 
