@@ -12,7 +12,7 @@ def phi(x, sigma):
 
 def rho_next_simple_lax(rho_last, v_last, delta_t, delta_x, j, time, position,sigma):
     return  1/2*(rho_last[j+1]+rho_last[j-1]) - v_last[j]*delta_t/(2*delta_x)*(rho_last[j+1]-rho_last[j-1])-\
-            rho_last[j]*delta_t/(2*delta_x)*(v_last[j+1]- v_last[j-1]) + q_in(time)*phi(position,sigma)
+            rho_last[j]*delta_t/(2*delta_x)*(v_last[j+1]- v_last[j-1]) + delta_t*q_in(time)*phi(position,sigma)
 
 def v_next_simple_lax(rho_last, v_last, delta_t, delta_x,j, tau, V0, rho_max, E, c, my):
     return ((v_last[j+1]+v_last[j-1])/2-v_last[j]*delta_t*(v_last[j+1]-v_last[j-1])/(2*delta_x))\
