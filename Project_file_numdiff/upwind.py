@@ -1,14 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def safe_v(rho, V0, rho_max, E):
-    return V0*(1-rho/rho_max)/(1+E*(rho/rho_max)**4)
 
-def q_in(time):
-    return 40
-
-def phi(x, sigma):
-    return (2*np.pi*sigma**2)**(-0.5)*np.exp(-x**2/(2*sigma**2))
 
 def rho_next_upwind(rho_last, v_last, delta_t, delta_x, j, time, position,sigma):
     return rho_last[j] - delta_t/delta_x*(rho_last[j]*v_last[j]-rho_last[j-1]*v_last[j-1])+ delta_t*q_in(time)*phi(position,sigma)
@@ -22,7 +15,7 @@ def one_step_upwind(rho_last, v_last, X, delta_t,delta_x ,time,L,sigma, rho0,V0,
     rho_next = np.zeros(X)
     v_next=np.zeros(X)
     rho_next[0]=rho0
-    v_next[0]=safe_v(rho0,V0,rho_max,E)
+    v_next[0]=c.safe_v(rho0,V0,rho_max,E)
     for j in range(1,X-1):
         position=j*delta_x-L/2
         rho_next[j], v_next[j]=rho_next_upwind(rho_last,v_last,delta_t,delta_x, j ,time,position,sigma),\
