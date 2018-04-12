@@ -11,7 +11,7 @@ def safe_v(rho, V0, rho_max, E):
     return V0*(1-rho/rho_max)/(1+E*(rho/rho_max)**4)
 
 def q_in(time):
-    return 40
+    return 10
 
 def phi(x, sigma):
     return (2*np.pi*sigma**2)**(-0.5)*np.exp(-x**2/(2*sigma**2))
@@ -23,14 +23,14 @@ def f(u_last, c, j):
 
 def s(time, position, sigma, tau, u_last, rho_max, delta_t, delta_x, V0, j ,E, my):
     s_step = np.zeros(2)
-    s_step[:] = q_in(time)*phi(position,sigma), (1/tau)*((V0*(1-u_last[j,0]/rho_max))/(1+E*(u_last[j,0]/rho_max)**4)\
-                                                         -u_last[j,1])+my*delta_t*(u_last[j+1,1]-2*u_last[j,1]\
-                                                        +u_last[j-1,1])/(u_last[j,0]*delta_x**2)
-
+    s_step[:] = q_in(time)*phi(position,sigma), (1/tau)*((V0*(1-u_last[j,0]/rho_max))/(1+E*(u_last[j,0]/rho_max)**4)
+                                                         - u_last[j,1])+my*delta_t*(u_last[j+1,1]-2*u_last[j,1]
+                                                         + u_last[j-1,1])/(u_last[j,0]*delta_x**2)
     return s_step
 
 def u_next_upwind(u_last, delta_t, delta_x, j, time, position, sigma, tau, V0, rho_max, E, c, my):
-    return u_last[j] - delta_t/delta_x*(f(u_last,c,j)-f(u_last,c,j-1)) + delta_t*s(time, position, sigma, tau, u_last, rho_max, delta_t, delta_x, V0, j, E, my)
+    return u_last[j] - delta_t/delta_x*(f(u_last,c,j)-f(u_last,c,j-1)) + delta_t*s(time, position, sigma, tau, u_last,
+                                                                            rho_max, delta_t, delta_x, V0, j, E, my)
 
 
 def one_step_upwind(u_last, X, delta_t, delta_x ,time, L, sigma, rho0, V0, rho_max, E, tau, c, my):
@@ -43,11 +43,11 @@ def one_step_upwind(u_last, X, delta_t, delta_x ,time, L, sigma, rho0, V0, rho_m
 
     return u_next
 
-def solve_upwind(T, X, rho0,delta_t,delta_x,L,sigma,V0,rho_max,E,tau,c,my):
+def solve_upwind(T, X, rho0, delta_t, delta_x, L, sigma, V0, rho_max, E, tau, c, my):
     grid_u = initialize_grid(T, X, rho0, V0, rho_max, E)
     for i in range(1,T):
         time=i*delta_t
-        grid_u[i]=one_step_upwind(grid_u[i-1], X, delta_t,delta_x ,time,L,sigma, rho0,V0,rho_max,E,tau,c,my)
+        grid_u[i]=one_step_upwind(grid_u[i-1], X, delta_t, delta_x, time, L, sigma, rho0, V0, rho_max, E, tau, c, my)
     return grid_u
 
 def plot_upwind(T,X,delta_x,grid_rho):
