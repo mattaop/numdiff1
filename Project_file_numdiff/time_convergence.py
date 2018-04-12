@@ -42,6 +42,8 @@ def time_convergence(solver):
     
     u_ex = solver(T_ex, c.SPACE_POINTS,delta_t_min,c.delta_x)
 
+    #print(u_ex)
+
     delta_t_list,error_rho,error_v = time_error(solver,c.SPACE_POINTS,c.delta_x,T_max, T_ex,u_ex)
     return delta_t_list, error_rho,error_v
    

@@ -7,6 +7,7 @@ MAX_TIME=5*60 #seconds
 
 TIME_POINTS= 1000
 SPACE_POINTS=2**(M)
+
 L=5000 #meter
 
 delta_t=0.001
