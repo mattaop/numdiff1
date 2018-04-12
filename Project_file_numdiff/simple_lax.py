@@ -2,19 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import constants as c
 
-def safe_v(rho):
-    return c.V0*(1-rho/c.RHO_MAX)/(1+c.E*(rho/c.RHO_MAX)**4)
-
-def q_in(time):
-    return 1000
-
-def phi(x):
-	return (2*np.pi*c.SIGMA**2)**(-0.5)*np.exp(-x**2/(2*c.SIGMA**2))
-
 
 def rho_next_simple_lax(rho_last, v_last, delta_t, delta_x, j, time, position):
     return  1/2*(rho_last[j+1]+rho_last[j-1]) - v_last[j]*delta_t/(2*delta_x)*(rho_last[j+1]-rho_last[j-1])-\
-            rho_last[j]*delta_t/(2*delta_x)*(v_last[j+1]- v_last[j-1]) + delta_t*q_in(time)*phi(position)
+            rho_last[j]*delta_t/(2*delta_x)*(v_last[j+1]- v_last[j-1]) + delta_t*c.q_in(time)*c.phi(position)
 
 def v_next_simple_lax(rho_last, v_last, delta_t, delta_x,j):
     return ((v_last[j+1]+v_last[j-1])/2-v_last[j]*delta_t*(v_last[j+1]-v_last[j-1])/(2*delta_x))\
@@ -25,7 +16,7 @@ def one_step_simple_lax(rho_last, v_last, X, delta_t,delta_x ,time):
     rho_next=np.zeros(X)
     v_next=np.zeros(X)
     rho_next[0]=c.RHO_0
-    v_next[0]=safe_v(c.RHO_0)
+    v_next[0]=c.safe_v(c.RHO_0)
     for j in range(1,X-1):
         position=j*delta_x-c.L/2
         rho_next[j], v_next[j]=rho_next_simple_lax(rho_last,v_last,delta_t,delta_x, j ,time,position),\
@@ -39,13 +30,13 @@ def initialize_grid(time_points, space_points, rho0):
     grid_rho=np.zeros((time_points,space_points))
     grid_v=np.zeros((time_points,space_points))
     grid_rho[0]=np.ones(space_points)*rho0
-    grid_v[0]=safe_v(grid_rho[0])
+    grid_v[0]=c.safe_v(grid_rho[0])
     return grid_rho,grid_v
 
 def solve_simple_lax(time_points, space_points, rho0, delta_t,delta_x):
     grid_rho,grid_v = initialize_grid(time_points, space_points, rho0)
     for i in range(1,time_points):
-        print(i)
+        #print(i)
         time=i*delta_t
         grid_rho[i], grid_v[i]=one_step_simple_lax(grid_rho[i-1],grid_v[i-1],space_points,
                                                    delta_t,delta_x ,time)
