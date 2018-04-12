@@ -29,15 +29,21 @@ def s(time, position, u_last, delta_t, delta_x, j, tau, V0, my, rho_max, E):
                                                          + u_last[j-1,1])/(u_last[j,0]*delta_x**2)
     return s_step
 
-def u_next_simple_lax(u_last, delta_t, delta_x, j, time, position, tau, V0, my, rho_max, E):
-    return (u_last[j+1]+u_last[j-1])/2 - delta_t/(2*delta_x)*(f(u_last,j+1)-f(u_last,j-1)) + delta_t*s(time, position, u_last, delta_t, delta_x, j, tau, V0, my, rho_max, E)
+def u_next_half_step(u_last, delta_t, delta_x, j, time, position, tau, V0, my, rho_max, E):
+    return (u_last[j+1] + u_last[j-1] - delta_t /delta_x*(f(u_last, j+1) - f(u_last, j)) \
+           + delta_t*s(time, position, u_last, delta_t, delta_x, j, tau, V0, my,rho_max, E))/2
+
+
+def u_next_lax_wendroff(u_last, delta_t, delta_x, j, time, position, tau, V0, my, rho_max, E):
+    return (u_last[j+1]+u_last[j-1])/2 - delta_t/(2*delta_x)*(f(u_last,j+1)-f(u_last,j-1)) \
+           + delta_t*s(time, position, u_last, delta_t, delta_x, j, tau, V0, my, rho_max, E)
 
 def one_step_simple_lax(u_last, X, delta_t, delta_x ,time, rho0, L, tau, V0, my, rho_max, E):
     u_next = np.zeros((X,2))
     u_next[0,:] = rho0, safe_v(rho0)
     for j in range(1,X-1):
         position=j*delta_x-L/2
-        u_next[j] = u_next_simple_lax(u_last, delta_t, delta_x, j, time, position, tau, V0, my, rho_max, E)
+        u_next[j] = u_next_lax_wendroff(u_last, delta_t, delta_x, j, time, position, tau, V0, my, rho_max, E)
     u_next[X-1]=2*u_next[X-2]-u_next[X-3]
     return u_next
 
