@@ -1,6 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+def initialize_grid(T, X, rho0, V0, rho_max, E):
+    grid_u = np.zeros((T, X, 2))
+    grid_u[0, :, 0] = np.ones(X) * rho0
+    grid_u[0, :, 1] = safe_v(grid_u[0, :, 0], V0, rho_max, E)
+    return grid_u
+
 def safe_v(rho, V0, rho_max, E):
     return V0*(1-rho/rho_max)/(1+E*(rho/rho_max)**4)
 
@@ -37,7 +43,8 @@ def one_step_upwind(u_last, X, delta_t, delta_x ,time, L, sigma, rho0, V0, rho_m
 
     return u_next
 
-def solve_upwind(grid_u, T, X, rho0,delta_t,delta_x,L,sigma,V0,rho_max,E,tau,c,my):
+def solve_upwind(T, X, rho0,delta_t,delta_x,L,sigma,V0,rho_max,E,tau,c,my):
+    grid_u = initialize_grid(T, X, rho0, V0, rho_max, E)
     for i in range(1,T):
         time=i*delta_t
         grid_u[i]=one_step_upwind(grid_u[i-1], X, delta_t,delta_x ,time,L,sigma, rho0,V0,rho_max,E,tau,c,my)
@@ -47,6 +54,7 @@ def plot_upwind(T,X,delta_x,grid_rho):
     x=np.linspace(-X*delta_x,X*delta_x,X)
     plt.plot(x,grid_rho[T-1])
     plt.show()
+
 
 def main():
     T = 100
@@ -63,10 +71,7 @@ def main():
     tau = 0.5
     c = 54
 
-    grid_u = np.zeros((T,X,2))
-    grid_u[0,:,0] = np.ones(X)*rho0
-    grid_u[0,:,1] = safe_v(grid_u[0,:,0], V0, rho_max, E)
-    grid_u = solve_upwind(grid_u, T, X, rho0, delta_t, delta_x, L, sigma, V0, rho_max, E, tau, c, my)
+    grid_u = solve_upwind(T, X, rho0, delta_t, delta_x, L, sigma, V0, rho_max, E, tau, c, my)
 
     plot_upwind(T, X, delta_x, grid_u[:,:,0])
 main()
