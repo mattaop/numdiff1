@@ -19,34 +19,6 @@ def v_next_simple_lax(rho_last, v_last, delta_t, delta_x,j):
     return ((v_last[j+1]+v_last[j-1])/2-v_last[j]*delta_t*(v_last[j+1]-v_last[j-1])/(2*delta_x))\
            +(delta_t/c.TAU)*((c.V0*(1-rho_last[j]/c.RHO_MAX))/(1+c.E*(rho_last[j]/c.RHO_MAX)**4)-v_last[j])-\
            (rho_last[j+1]-rho_last[j-1])*delta_t/(rho_last[j]*2*delta_x)*c.C**2+c.MY*delta_t*(v_last[j+1]-2*v_last[j]+v_last[j-1])/(rho_last[j]*delta_x**2)
-"""
-def f2_simple_lax(rho_last, v_last, rho_temp, v_temp, delta_t, delta_x,j, tau, V0, rho_max, E, c, my):
-    return rho_last[j]*(v_temp/delta_t - (v_last[j+1]+v_last[j-1])/(2*delta_t)+v_last[j]*(v_last[j+1]-v_last[j-1])/(2*delta_x))\
-           -(rho_last[j]/tau)*((V0*(1-rho_last[j]/rho_max))/(1+E*(rho_last[j]/rho_max)**4)-v_last[j])+\
-           (rho_last[j+1]-rho_last[j-1])/(2*delta_x)*c**2-my*(v_last[j+1]-2*v_last[j]+v_last[j+1])/delta_x**2
-
-def f1_simple_lax(rho_last, v_last, rho_temp, v_temp, delta_t, delta_x, j, time, position, sigma):
-    return rho_temp / delta_t - 1 / (2 * delta_t) * (rho_last[j + 1] + rho_last[j - 1])\
-           + v_last[j] / (2 * delta_x) * (rho_last[j + 1] - rho_last[j - 1]) + rho_last[j] / (2 * delta_x) * (
-                       v_last[j + 1] - v_last[j - 1])\
-           - q_in(time) * phi(position, sigma)
-"""
-#no need
-'''def jacobi_matrix(rho_last, v_last, rho_temp, v_temp, delta_t, delta_x, j, V0, tau, rho_max, E):
-    j1=1/delta_t+(v_last[j+1]-v_last[j-1])/(2*delta_x)
-    j2=(rho_last[j+1]-rho_last[j-1])/(2*delta_x)
-    j3=(v_temp/delta_t - (v_last[j+1]+v_last[j-1])/(2*delta_t)+v_temp*(v_last[j+1]-v_last[j-1])/(2*delta_x))-V0/tau*(rho_max**3*(rho_max**5-2*rho_max**4*rho_temp-3*rho_max*E*rho_temp**4+2*E*rho_temp**5)/(rho_max**4+E*rho_temp**4)**2)+v_temp/tau
-    j4=rho_temp/delta_t+rho_temp*(v_last[j+1]-v_last[j-1])/(2*delta_x)+rho_temp/tau
-    jacobi=np.matrix([[j1, j2],[j3,j4]])
-    return jacobi'''
-
-'''def newtons(rho_last, v_last, delta_t, delta_x, j, V0, tau, rho_max, E):
-    rho_temp, v_temp=rho_last, v_last
-    f_vector=np.ndarray([f1_simple_lax, f2_simple_lax])
-    while max(f_vector[0], f_vector[1])>1e-4:
-        jacobi=jacobi_matrix(rho_last, v_last, rho_temp, v_temp, delta_t, delta_x, j, V0, tau, rho_max, E)
-        delta_X=np.'''
-
 
 def one_step_simple_lax(rho_last, v_last, X, delta_t,delta_x ,time):
     rho_next=np.zeros(X)
@@ -62,11 +34,18 @@ def one_step_simple_lax(rho_last, v_last, X, delta_t,delta_x ,time):
 
     return rho_next, v_next
 
-def solve_simple_lax(grid_rho, grid_v, T, X,delta_t,delta_x):
+def initialize_grid(time_points, space_points, rho0):
+    grid_rho=np.zeros((time_points,space_points))
+    grid_v=np.zeros((time_points,space_points))
+    grid_rho[0]=np.ones(space_points)*rho0
+    grid_v[0]=safe_v(grid_rho[0])
+    return grid_rho,grid_v
 
-    for i in range(1,T):
+def solve_simple_lax(time_points, space_points, rho0, delta_t,delta_x):
+    grid_rho,grid_v = initialize_grid(time_points, space_points, rho0)
+    for i in range(1,time_points):
         time=i*delta_t
-        grid_rho[i], grid_v[i]=one_step_simple_lax(grid_rho[i-1],grid_v[i-1],X,
+        grid_rho[i], grid_v[i]=one_step_simple_lax(grid_rho[i-1],grid_v[i-1],space_points,
                                                    delta_t,delta_x ,time)
     return grid_rho,grid_v
 
@@ -79,15 +58,9 @@ def plot_simple_lax(T,X,delta_x,grid_rho,grid_v):
     plt.show()
 
 def main():
-    grid_rho=np.zeros((c.TIME_POINTS,c.SPACE_POINTS))
-    grid_v=np.zeros((c.TIME_POINTS,c.SPACE_POINTS))
-    grid_rho[0]=np.ones(c.SPACE_POINTS)*c.RHO_0
-    grid_v[0]=safe_v(grid_rho[0])
-    solve_simple_lax(grid_rho, grid_v, c.TIME_POINTS, c.SPACE_POINTS,c.delta_t,c.delta_x)
-    #print(grid_v)
-    #print(grid_rho)
-
+    grid_rho,grid_v = solve_simple_lax(c.TIME_POINTS, c.SPACE_POINTS,c.RHO_0,c.delta_t,c.delta_x)
     plot_simple_lax(c.TIME_POINTS,c.SPACE_POINTS,c.delta_x,grid_rho,grid_v)
+
 main()
 
 
