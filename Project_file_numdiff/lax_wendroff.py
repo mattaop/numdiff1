@@ -40,6 +40,7 @@ def solve_lax_wendroff(T, X, delta_t, delta_x):
     rho0, L, tau , V0, my, rho_max, E = c.RHO_0, c.L, c.TAU, c.V0, c.MY, c.RHO_MAX, c.E
     grid_u = c.initialize_grid(T, X, rho0)
     for i in range(1, T):
+        print(i)
         time=i*delta_t
         grid_u[i]=one_step_lax_wendroff(grid_u[i-1], X, delta_t, delta_x, time, rho0, L, tau, V0, my, rho_max, E)
     return grid_u
