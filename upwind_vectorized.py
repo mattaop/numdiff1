@@ -32,7 +32,6 @@ def s(time, position, u_last, delta_t, delta_x, j, tau, V0, my, rho_max, E):
 def u_next_upwind(u_last, delta_t, delta_x, j, time, position, tau, V0, my, rho_max, E):
     return u_last[j] - delta_t/delta_x*(f(u_last,j)-f(u_last,j-1)) + delta_t*s(time, position, u_last, delta_t, delta_x, j, tau, V0, my, rho_max, E)
 
-
 def one_step_upwind(u_last, X, delta_t, delta_x ,time, rho0, L, tau, V0, my, rho_max, E):
     u_next = np.zeros((X,2))
     u_next[0,:] = rho0, safe_v(rho0)
@@ -54,7 +53,6 @@ def plot_upwind(T, X, delta_x, grid_u):
     x=np.linspace(-X*delta_x,X*delta_x,X)
     plt.plot(x,grid_u[T-1])
     plt.show()
-
 
 def main():
     grid_u = solve_upwind(c.TIME_POINTS, c.SPACE_POINTS, c.delta_t, c.delta_x)
