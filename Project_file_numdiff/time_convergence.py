@@ -1,18 +1,18 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import simple_lax as sl
+#import simple_lax as sl
 import simple_lax_vectorized as sl_v
 
 import upwind_vectorized as up_v
 
-import upwind as up
+#import upwind as up
 import constants as c
 
 
 #solve_simple_lax(time_points, space_points, rho0, delta_t,delta_x)
-#Laget kun for å funke for Simple-Lax foreløpig:
+
 def time_error(solver, space_points, delta_x,T_max,T_ex,u_ex):
-    n = 12 #
+    n = 10 #
     error_list_rho = np.zeros(n)
     error_list_v = np.zeros(n)
     delta_t_list = np.zeros(n)
@@ -28,20 +28,22 @@ def time_error(solver, space_points, delta_x,T_max,T_ex,u_ex):
         delta_t_list[i] = delta_t
     return delta_t_list,error_list_rho,error_list_v
 
-def time_convergence():
+def time_convergence(solver):
 
     T_max = 5 #Time (minutes?) until we stop the simulation
-    T_ex = 10000 #Number of time steps in the reference (exact) solution 
+    T_ex = 1000 #Number of time steps in the reference (exact) solution 
     
     delta_t_min = T_max/(T_ex-1) #The delta T-value used in the exact solution
     
-    u_ex = sl_v.solve_simple_lax(T_ex, c.SPACE_POINTS,delta_t_min,c.delta_x)
+    u_ex = solver(T_ex, c.SPACE_POINTS,delta_t_min,c.delta_x)
+    print(u_ex)
     
-    delta_t_list,error_rho,error_v = time_error(sl_v.solve_simple_lax,c.SPACE_POINTS,c.delta_x,T_max, T_ex,u_ex)
-    print(error_rho)
-    print(error_v)
+    delta_t_list,error_rho,error_v = time_error(solver,c.SPACE_POINTS,c.delta_x,T_max, T_ex,u_ex)
+    return delta_t_list, error_rho,error_v
+   
     
-    print(delta_t_list)
+def plot_time_convergence(solver):
+    delta_t_list, error_rho, error_v = time_convergence(solver)
     plt.figure()
     plt.plot(delta_t_list,error_rho,label=r"$\rho$")
     plt.plot(delta_t_list,error_v,label= "v")
@@ -51,7 +53,8 @@ def time_convergence():
     plt.semilogx()
     plt.semilogy()
     plt.legend()
-    plt.show()  
+    plt.show() 
+
+#plot_time_convergence(sl_v.solve_simple_lax)
+plot_time_convergence(up_v.solve_upwind)
     
-def plot_time_convergence(solver)
-time_convergence()
