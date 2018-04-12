@@ -19,7 +19,7 @@ Q_IN=2000
 
 # hei
 SIGMA=56.7
-MY=600
+MY=0
 TAU=0.5
 C=54
 
