@@ -45,7 +45,7 @@ def time_error(X, rho0,delta_x,L,sigma,V0,rho_max,E,tau,c,my,rho_ex,v_ex,T_max,T
         grid_rho=np.zeros((T,X))
         grid_v=np.zeros((T,X))
         grid_rho[0]=np.ones(X)*rho0
-        grid_v[0]=safe_v(grid_rho[0], V0, rho_max, E)
+        grid_v[0]=sl.safe_v(grid_rho[0], V0, rho_max, E)
         rho, v = sl.solve_simple_lax(grid_rho, grid_v, T, X, rho0,delta_t,delta_x,L,sigma,V0,rho_max,E,tau,c,my)
         #print(rho_ex[T_ex-1])
         #print(rho[T-1])
@@ -78,7 +78,7 @@ def time_convergence():
     grid_rho=np.zeros((T_ex,X))
     grid_v=np.zeros((T_ex,X))
     grid_rho[0]=np.ones(X)*rho0
-    grid_v[0]=safe_v(grid_rho[0], V0, rho_max, E)
+    grid_v[0]=sl.safe_v(grid_rho[0], V0, rho_max, E)
     
     delta_t_min = T_max/(T_ex-1) #The delta T-value used in the exact solution
     
@@ -91,19 +91,16 @@ def time_convergence():
     
     print(delta_t_list)
     plt.figure()
-    plt.plot(delta_t_list,error_rho)
-    plt.title("Error rho")
-    plt.xlabel(r"$\delta t$")
+    plt.plot(delta_t_list,error_rho,label=r"$\rho$")
+    plt.plot(delta_t_list,error_v,label= "v")
+    plt.title("Convergence plot in time")
+    plt.xlabel(r"$\Delta t$")
     plt.ylabel("Error")
     plt.semilogx()
     plt.semilogy()
+    plt.legend()
     plt.show()  
-    plt.figure()
-    plt.title("Error v")
-    plt.plot(delta_t_list,error_v)
-    plt.semilogx()
-    plt.semilogy()
-    plt.show()   
+    
     
 time_convergence()
         
