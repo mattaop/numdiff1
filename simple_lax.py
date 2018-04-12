@@ -5,7 +5,7 @@ def safe_v(rho, V0, rho_max, E):
     return V0*(1-rho/rho_max)/(1+E*(rho/rho_max)**4)
 
 def q_in(time):
-    return 10
+    return 2000
 def phi(x, sigma):
 	return (2*np.pi*sigma**2)**(-0.5)*np.exp(-x**2/(2*sigma**2))
 
@@ -79,15 +79,15 @@ def plot_simple_lax(T,X,delta_x,grid_rho,grid_v):
 
 def main():
     max_time=5*60 #seconds
-    T=5000
-    X=50
+    T=1000
+    X=2**8
     V0=120
     rho_max=140
     E=100
-    rho0=40
+    rho0=60
     delta_t=0.001
-    delta_x=37  #meter
-    L=delta_x*X #meter
+    L=5000 #meter
+    delta_x = L/(X-1)
     sigma=56.7
     my=600
     tau=0.5
@@ -102,6 +102,6 @@ def main():
     #print(grid_rho)
 
     plot_simple_lax(T,X,delta_x,grid_rho,grid_v)
-#main()
+main()
 
 
