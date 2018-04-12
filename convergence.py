@@ -5,7 +5,8 @@ import simple_lax as sl
 import upwind_vectorized as up_v
 
 import upwind as up
-
+import constants as c
+"""
 m=8 #2^m, gives number of points in space
 max_time=5*60 #seconds
 T=1000
@@ -26,7 +27,7 @@ grid_rho=np.zeros((T,X))
 grid_v=np.zeros((T,X))
 grid_rho[0]=np.ones(X)*rho0
 grid_v[0]=sl.safe_v(grid_rho[0], V0, rho_max, E)
-
+"""
 
 
 def spatial_convergence(m,solver,grid_rho, grid_v, T, X, rho0,delta_t,delta_x,L,sigma,V0,rho_max,E,tau,c,my):
@@ -82,7 +83,7 @@ def plot_convergence():
     plt.loglog(step_length_list,conv_list[1])
     plt.show()
 
-plot_convergence()
+#plot_convergence()
 
 
 
@@ -102,27 +103,23 @@ plot_convergence()
         newlist[i]=U_exact[int(i*number)]
 """
 
-
+#solve_simple_lax(time_points, space_points, rho0, delta_t,delta_x)
 #Laget kun for å funke for Simple-Lax foreløpig:
-def time_error(solver, X, rho0,delta_x,L,sigma,V0,rho_max,E,tau,c,my,rho_ex,v_ex,T_max,T_ex):
-    n = 12 #
+def time_error(solver, space_points, rho0,delta_x,T_max,T_ex,rho_ex,v_ex):
+    n = 8 #
     error_list_rho = np.zeros(n)
     error_list_v = np.zeros(n)
     delta_t_list = np.zeros(n)
     for i in range(n):
-        T = 2**(i+1) #Number of time points in each iteration
-        delta_t = T_max/(T-1) #delta t in each iteration
+        time_points = 2**(i+1) #Number of time points in each iteration
+        delta_t = T_max/(time_points-1) #delta t in each iteration
         print(delta_t)
         #Initialization of a new grid - Skal vi lage en egen funksjon til dette?:
-        grid_rho=np.zeros((T,X))
-        grid_v=np.zeros((T,X))
-        grid_rho[0]=np.ones(X)*rho0
-        grid_v[0]=sl.safe_v(grid_rho[0], V0, rho_max, E)
-        rho, v = solver(grid_rho, grid_v, T, X, rho0,delta_t,delta_x,L,sigma,V0,rho_max,E,tau,c,my)
+        rho, v = solver(time_points, space_points, rho0,delta_t,delta_x)
         #print(rho_ex[T_ex-1])
         #print(rho[T-1])
-        error_rho = rho_ex[T_ex-1]-rho[T-1]
-        error_v = v_ex[T_ex-1]-v[T-1]
+        error_rho = rho_ex[T_ex-1]-rho[time_points-1]
+        error_v = v_ex[T_ex-1]-v[time_points-1]
         error_list_rho[i] = np.sqrt(delta_x*delta_t)*np.linalg.norm(error_rho,2)
         error_list_v[i] = np.sqrt(delta_x*delta_t)*np.linalg.norm(error_v,2)
         delta_t_list[i] = delta_t
@@ -131,21 +128,14 @@ def time_error(solver, X, rho0,delta_x,L,sigma,V0,rho_max,E,tau,c,my,rho_ex,v_ex
 def time_convergence():
 
     T_max = 5 #Time (minutes?) until we stop the simulation
-    T_ex = 10000 #Number of time steps in the reference (exact) solution 
-    
-    
-    #Initialization of exact solution simple lax:
-    grid_rho=np.zeros((T_ex,X))
-    grid_v=np.zeros((T_ex,X))
-    grid_rho[0]=np.ones(X)*rho0
-    grid_v[0]=sl.safe_v(grid_rho[0], V0, rho_max, E)
+    T_ex = 1000 #Number of time steps in the reference (exact) solution 
     
     delta_t_min = T_max/(T_ex-1) #The delta T-value used in the exact solution
     
-    rho_ex,v_ex = sl.solve_simple_lax(grid_rho, grid_v, T_ex, X, rho0,delta_t_min,delta_x,L,sigma,V0,rho_max,E,tau,c,my)
+    rho_ex,v_ex = sl.solve_simple_lax(T_ex, c.SPACE_POINTS, c.RHO_0,delta_t_min,c.delta_x)
     print(rho_ex)
     
-    delta_t_list,error_rho,error_v = time_error(sl.solve_simple_lax,X,         rho0,delta_x,L,sigma,V0,rho_max,E,tau,c,my,rho_ex,v_ex,T_max, T_ex)
+    delta_t_list,error_rho,error_v = time_error(sl.solve_simple_lax,c.SPACE_POINTS,c.RHO_0,c.delta_x,T_max, T_ex,rho_ex,v_ex)
     print(error_rho)
     print(error_v)
     
@@ -161,7 +151,7 @@ def time_convergence():
     plt.legend()
     plt.show()  
     
-    
+    """
     grid_rho=np.zeros((T_ex,X))
     grid_v=np.zeros((T_ex,X))
     grid_rho[0]=np.ones(X)*rho0
@@ -187,7 +177,7 @@ def time_convergence():
     plt.semilogy()
     plt.legend()
     plt.show()  
-    
+    """
 time_convergence()
         
         

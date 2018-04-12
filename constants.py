@@ -13,6 +13,6 @@ delta_t=0.001
 delta_x=L/(SPACE_POINTS-1)  #meter
 
 SIGMA=56.7
-MY=600
+MY=0
 TAU=0.5
 C=54
