@@ -6,7 +6,11 @@ import upwind_vectorized as up_v
 
 import upwind as up
 import constants as c
+<<<<<<< HEAD:convergence.py
 """
+=======
+
+>>>>>>> 2a5648f8006a5e898ff75f1ca2df4bc6281b6e4d:Project_file_numdiff/convergence.py
 m=8 #2^m, gives number of points in space
 max_time=5*60 #seconds
 T=1000
@@ -30,18 +34,17 @@ grid_v[0]=sl.safe_v(grid_rho[0], V0, rho_max, E)
 """
 
 
-def spatial_convergence(m,solver,grid_rho, grid_v, T, X, rho0,delta_t,delta_x,L,sigma,V0,rho_max,E,tau,c,my):
-    convergence_list=np.zeros((2,m+1))
-    print(convergence_list)
-    rho_exact,v_exact=solver(grid_rho, grid_v, T, X, rho0,delta_t,delta_x,L,sigma,V0,rho_max,E,tau,c,my)    # T,delta_t
-    x_list = np.linspace(-L, L, len(rho_exact[0]))
+def spatial_convergence(solver,grid_rho, grid_v, T, X,delta_t,delta_x):
+    convergence_list=np.zeros((2,c.M+1))
+    rho_exact,v_exact=solver(grid_rho, grid_v, T, X,delta_t,delta_x)    # FIX THIS
+    x_list = np.linspace(-c.L, c.L, len(rho_exact[0]))
     #plt.plot(x_list,rho_exact[-1])
     #plt.plot(x_list, v_exact[-1])
     #plt.show()
     exact_list=np.array([rho_exact[-1],v_exact[-1]])
     #print(exact_list)
-    step_length_list=np.zeros(m+1)
-    for i in range(1,m+1):
+    step_length_list=np.zeros(c.M+1)
+    for i in range(1,c.M+1):
         len_points = 2 ** i
         new_exact_list=np.zeros((2,len_points))
         ratio=(len(exact_list[0])-1)/(len_points-1)
@@ -50,15 +53,16 @@ def spatial_convergence(m,solver,grid_rho, grid_v, T, X, rho0,delta_t,delta_x,L,
             new_exact_list[:,j]=exact_list[:,int(j*ratio)]
 
         #print(new_exact_list)
-        delta_x=L/(len_points-1)    #with endpoints
+        delta_x = c.L/(len_points-1)    #with endpoints
         print(delta_x)
         step_length_list[i-1]=delta_x
-        grid_rho = np.zeros((T, len_points))
-        grid_v = np.zeros((T, len_points))
-        grid_rho[0] = np.ones(len_points) * rho0
-        grid_v[0] = sl.safe_v(grid_rho[0], V0, rho_max, E)
 
-        rho_i,v_i=solver(grid_rho, grid_v, T, len_points, rho0,delta_t,delta_x,L,sigma,V0,rho_max,E,tau,c,my)
+        grid_rho = np.zeros((c.TIME_POINTS, len_points))
+        grid_v = np.zeros((c.TIME_POINTS, len_points))
+        grid_rho[0] = np.ones(len_points) * c.RHO_0
+        grid_v[0] = sl.safe_v(grid_rho[0], c.V0, c.RHO_MAX, c.E)
+
+        rho_i,v_i = solver(grid_rho, grid_v, c.TIME_POINTS, len_points,delta_t,delta_x)
         i_list = np.array([rho_i[-1], v_i[-1]])
 
         convergence_list[0][i-1]=np.linalg.norm(new_exact_list[0]-i_list[0],np.inf)
@@ -72,12 +76,8 @@ def spatial_convergence(m,solver,grid_rho, grid_v, T, X, rho0,delta_t,delta_x,L,
 
     return convergence_list,step_length_list
 
-
-
-
 def plot_convergence():
-
-    conv_list,step_length_list=spatial_convergence(m,up.solve_upwind,grid_rho, grid_v, T, X, rho0,delta_t,delta_x,L,sigma,V0,rho_max,E,tau,c,my)
+    conv_list,step_length_list=spatial_convergence(m,up.solve_upwind,grid_rho, grid_v, c.TIME_POINTS, x.SPACE_POINTS)
     print(len(conv_list),len(step_length_list))
     plt.loglog(step_length_list,conv_list[0])
     plt.loglog(step_length_list,conv_list[1])
@@ -86,6 +86,7 @@ def plot_convergence():
 #plot_convergence()
 
 
+<<<<<<< HEAD:convergence.py
 
 """
 #print(U_exact, U)
@@ -104,6 +105,8 @@ def plot_convergence():
 """
 
 #solve_simple_lax(time_points, space_points, rho0, delta_t,delta_x)
+=======
+>>>>>>> 2a5648f8006a5e898ff75f1ca2df4bc6281b6e4d:Project_file_numdiff/convergence.py
 #Laget kun for å funke for Simple-Lax foreløpig:
 def time_error(solver, space_points, rho0,delta_x,T_max,T_ex,rho_ex,v_ex):
     n = 8 #
