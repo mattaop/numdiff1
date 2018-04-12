@@ -43,9 +43,9 @@ def plot_upwind(T,X,delta_x,grid_rho):
     plt.show()
 
 def main():
-    T = 100
-    X = 100
-    V0 = 80
+    T = 1000
+    X = 2**8
+    V0 = 120
     rho_max = 140
     E = 100
     rho0 = 10
