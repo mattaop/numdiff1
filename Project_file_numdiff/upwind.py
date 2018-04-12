@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
+import constants as c
 
 
 def rho_next_upwind(rho_last, v_last, delta_t, delta_x, j, time, position,sigma):
@@ -36,25 +36,8 @@ def plot_upwind(T,X,delta_x,grid_rho):
     plt.show()
 
 def main():
-    T = 1000
-    X = 2**8
-    V0 = 120
-    rho_max = 140
-    E = 100
-    rho0 = 10
-    delta_t = 0.01
-    delta_x = 20  # meter
-    L = delta_x * X  # meter
-    sigma = 56.7
-    my = 600
-    tau = 0.5
-    c = 54
 
-    grid_rho=np.zeros((T,X))
-    grid_v=np.zeros((T,X))
-    grid_rho[0]=np.ones(X)*rho0
-    grid_v[0]=safe_v(grid_rho[0], V0, rho_max, E)
     grid_rho, grid_v = solve_upwind(grid_rho, grid_v, T, X, rho0, delta_t, delta_x, L, sigma, V0, rho_max, E, tau, c, my)
 
     plot_upwind(T,X,delta_x,grid_rho)
-main()
+#main()
