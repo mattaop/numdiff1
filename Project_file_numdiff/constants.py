@@ -23,3 +23,17 @@ MY=0
 TAU=0.5
 C=54
 
+def initialize_grid(T, X, rho0):
+    grid_u = np.zeros((T, X, 2))
+    grid_u[0, :, 0] = np.ones(X) * rho0
+    grid_u[0, :, 1] = safe_v(grid_u[0, :, 0])
+    return grid_u
+
+def safe_v(rho):
+    return V0 * (1 - rho / RHO_MAX) / (1 + E * (rho / RHO_MAX) ** 4)
+
+def q_in(time):
+    return 1000
+
+def phi(x):
+    return (2*np.pi*SIGMA**2)**(-0.5)*np.exp(-x**2/(2*SIGMA**2))
