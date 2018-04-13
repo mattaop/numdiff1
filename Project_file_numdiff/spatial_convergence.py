@@ -13,10 +13,8 @@ def spatial_convergence_vec(solver, T, X, delta_t, delta_x):
     step_length_list = np.zeros(c.M + 1)
 
     x_list = np.linspace(-c.L / 2, c.L / 2, len(exact_list))
-    print("hei")
     plt.plot(x_list,exact_list[:,0])
     plt.show()
-    print("hei2")
 
     for j in range(c.M):
         x_points = 2 ** (j + 1)
