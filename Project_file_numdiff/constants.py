@@ -1,13 +1,13 @@
 import numpy as np
 
 
-
 M=7
 MAX_TIME=5*60 #seconds
 
 TIME_POINTS= 2000
 
 SPACE_POINTS=2**(M)
+
 
 L=5000 #meter
 

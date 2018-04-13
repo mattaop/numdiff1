@@ -8,12 +8,7 @@ def safe_v(rho):
     return c.V0*(1-rho/c.RHO_MAX)/(1+c.E*(rho/c.RHO_MAX)**4)
 
 def q_in(time):
-    if time<40:
-        return 2
-    elif (time>80) and (time<120):
-        return 2
-    else:
-        return 0
+    return 2
 def phi(x):
 	return (2*np.pi*c.SIGMA**2)**(-0.5)*np.exp(-x**2/(2*c.SIGMA**2))
 
@@ -105,7 +100,7 @@ def main():
     #print(grid_v)
     #print(grid_rho)
 
-    plot_simple_lax(c.TIME_POINTS,c.delta_t,c.SPACE_POINTS,c.delta_x,grid_rho,grid_v)
+    #plot_simple_lax(c.TIME_POINTS,c.delta_t,c.SPACE_POINTS,c.delta_x,grid_rho,grid_v)
     plot_simple_lax_3d(c.TIME_POINTS, c.delta_t, c.SPACE_POINTS, c.delta_x, grid_rho, grid_v)
 main()
 
