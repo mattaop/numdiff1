@@ -1,8 +1,9 @@
 import numpy as np
 
 
-M=8
+M=6
 MAX_TIME=5*60 #seconds
+
 
 TIME_POINTS= 1000
 

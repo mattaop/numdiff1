@@ -10,13 +10,19 @@ def f(u_last):
 
 def s(time, position, u_last, delta_t, delta_x, j):
     s_step = np.zeros(2)
-    s_step[:] = c.q_in(time)*c.phi(position), (1/c.TAU)*((c.V0*(1-u_last[j,0]/c.RHO_MAX))/(1+c.E*(u_last[j,0]/c.RHO_MAX)**4)
-                                                         - u_last[j,1])+c.MY*delta_t*(u_last[j+1,1]-2*u_last[j,1]
-                                                         + u_last[j-1,1])/(u_last[j,0]*delta_x**2)
+    s_step[:] = c.q_in(time)*c.phi(position), \
+                (1/c.TAU)*((c.V0*(1-u_last[j,0]/c.RHO_MAX))/(1+c.E*(u_last[j,0]/c.RHO_MAX)**4)- u_last[j,1])
+
+        #+c.MY*delta_t*(u_last[j+1,1]-2*u_last[j,1]+ u_last[j-1,1])/(u_last[j,0]*delta_x**2)
     return s_step
 
 def u_next_upwind(u_last, delta_t, delta_x, j, time, position):
-    return u_last[j] - delta_t/delta_x*(f(u_last[j])-f(u_last[j-1])) + delta_t*s(time, position, u_last, delta_t, delta_x, j)
+    if u_last[j,1] < 0:
+        return u_last[j] - delta_t / delta_x * (f(u_last[j+1]) - f(u_last[j])) \
+               + delta_t * s(time, position, u_last, delta_t, delta_x, j)
+    else:
+        return u_last[j] - delta_t/delta_x*(f(u_last[j])-f(u_last[j-1])) \
+           + delta_t*s(time, position, u_last, delta_t, delta_x, j)
 
 def one_step_upwind(u_last, X, delta_t, delta_x ,time):
     u_next = np.zeros((X,2))
@@ -44,4 +50,4 @@ def main():
     grid_u = solve_upwind(c.TIME_POINTS, c.SPACE_POINTS, c.delta_t, c.delta_x)
     plot_upwind(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,0])
     plot_upwind(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,1])
-#main()
+main()
