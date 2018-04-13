@@ -42,7 +42,7 @@ def solve_simple_lax(time_points, space_points, rho0, delta_t,delta_x):
                                                    delta_t,delta_x ,time)
     return grid_rho,grid_v
 
-def plot_simple_lax(T,X,delta_x,grid_rho,grid_v):
+def plot_simple_lax(T,delta_t,X,delta_x,grid_rho,grid_v):
     x=np.linspace(-X*delta_x,X*delta_x,X)
     plt.figure()
     plt.plot(x,grid_rho[T-1])
@@ -51,9 +51,19 @@ def plot_simple_lax(T,X,delta_x,grid_rho,grid_v):
     plt.plot(x,grid_v[T-1])
     plt.show()
 
+def plot_simple_lax_3d(T,delta_t,X,delta_x,grid_rho,grid_v):
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+    x = np.arange(-X * delta_x / 2, X * delta_x / 2, delta_x)
+    y = np.arange(0, T * delta_t, delta_t)
+    x, y = np.meshgrid(x, y)
+    ax.plot_surface(x, y, grid_rho, cmap=cm.coolwarm)
+    plt.show()
+
 def main():
     grid_rho,grid_v = solve_simple_lax(c.TIME_POINTS, c.SPACE_POINTS,c.RHO_0,c.delta_t,c.delta_x)
-    plot_simple_lax(c.TIME_POINTS,c.SPACE_POINTS,c.delta_x,grid_rho,grid_v)
+    plot_simple_lax(c.TIME_POINTS,c.delta_t,c.SPACE_POINTS,c.delta_x,grid_rho,grid_v)
+    plot_simple_lax_3d(c.TIME_POINTS,c.delta_t, c.SPACE_POINTS, c.delta_x, grid_rho, grid_v)
 
 #main()
 

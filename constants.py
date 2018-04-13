@@ -2,8 +2,8 @@ import numpy as np
 
 M=8 #2^m, gives number of points in space
 MAX_TIME=60 #seconds
-TIME_POINTS=4000
-SPACE_POINTS=1000
+TIME_POINTS=1000
+SPACE_POINTS=1500
 V0=33.33
 RHO_MAX=0.14
 E=100
