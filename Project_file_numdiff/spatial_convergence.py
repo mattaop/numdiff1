@@ -45,7 +45,7 @@ def spatial_convergence_vec(solver, T, X, delta_t, delta_x):
     return convergence_list, step_length_list
 
 def plot_convergence():
-    conv_list,step_length_list=spatial_convergence_vec(sl_v.solve_simple_lax, c.TIME_POINTS, c.SPACE_POINTS,c.delta_t,c.delta_x)
+    conv_list, step_length_list = spatial_convergence_vec(sl_v.solve_simple_lax, c.TIME_POINTS, c.SPACE_POINTS, c.delta_t, c.delta_x)
     print(conv_list[0])
     print(conv_list[1])
     plt.loglog(step_length_list,conv_list[0],label='rho')
