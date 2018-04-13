@@ -1,17 +1,17 @@
 import numpy as np
 
 
-M=10
+M=14
 MAX_TIME=5*60 #seconds
 
-TIME_POINTS= 1000
+TIME_POINTS= 50
 
 SPACE_POINTS=2**(M)
 
 
 L=5000 #meter
 
-delta_t=0.1
+delta_t=0.01
 delta_x=L/(SPACE_POINTS-1)  #meter
 
 V0=33.33
