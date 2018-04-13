@@ -29,7 +29,7 @@ def time_error(solver, space_points, delta_x,T_max,T_ex,u_ex):
 
 def time_convergence(solver):
 
-    T_max = 5 #Time (minutes?) until we stop the simulation
+    T_max = 5*60 #Time (minutes?) until we stop the simulation
     T_ex = 10000 #Number of time steps in the reference (exact) solution
 
     delta_t_min = T_max/(T_ex-1) #The delta T-value used in the exact solution

@@ -68,8 +68,7 @@ def main():
 
 
 
-t0 = time()
-main()
-t1 = time()
-print("Time: ", t1 - t0)
+
+#main()
+
 
