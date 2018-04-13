@@ -5,6 +5,8 @@ from time import time
 
 
 def f(u_last):
+    #if u_last[0] < c.RHO_0-0.001:
+        #print(u_last)
     f_step = np.zeros(2)
     f_step[:] = u_last[0]*u_last[1], (u_last[1]**2)/2 + c.C**2*np.log(u_last[0])
     return f_step
@@ -26,7 +28,7 @@ def one_step_simple_lax(u_last, X, delta_t, delta_x ,time):
         position=j*delta_x-c.L/2
         u_next[j] = u_next_simple_lax(u_last, delta_t, delta_x, j, time, position)
         u_next[j][0] = min(c.RHO_MAX, u_next[j][0])
-        u_next[j][1] = max(0,u_next[j][1])
+        u_next[j][1] = max(0, u_next[j][1])
     u_next[X-1]=2*u_next[X-2]-u_next[X-3]
     return u_next
 
@@ -58,7 +60,7 @@ def main():
     plot_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,0])
     #plot_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,1])
 
-main()
+#main()
 
 
 
