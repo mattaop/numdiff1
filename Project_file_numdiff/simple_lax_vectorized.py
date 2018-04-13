@@ -26,7 +26,7 @@ def one_step_simple_lax(u_last, X, delta_t, delta_x ,time):
         position=j*delta_x-c.L/2
         u_next[j] = u_next_simple_lax(u_last, delta_t, delta_x, j, time, position)
         u_next[j][0] = min(c.RHO_MAX, u_next[j][0])
-        u_next[j][1]=max(0,u_next[j][1])
+        u_next[j][1] = max(0,u_next[j][1])
     u_next[X-1]=2*u_next[X-2]-u_next[X-3]
     return u_next
 
@@ -58,7 +58,7 @@ def main():
     plot_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,0])
     #plot_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,1])
 
-#main()
+main()
 
 
 

@@ -7,7 +7,7 @@ import constants as c
 import lax_wendroff as lw
 
 def time_error(solver, space_points, delta_x,T_max,T_ex,u_ex):
-    n = 13
+    n = 12
     error_list_rho = np.zeros(n)
     error_list_v = np.zeros(n)
     delta_t_list = np.zeros(n)
