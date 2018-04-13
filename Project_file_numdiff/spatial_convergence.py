@@ -16,7 +16,7 @@ def spatial_convergence_vec(solver, T, X, delta_t, delta_x):
     plt.plot(x_list,exact_list[:,0])
     plt.show()
 
-    for j in range(c.M):
+    for j in range(5,c.M):
         x_points = 2 ** (j + 1)
         new_exact_list = np.zeros((x_points,2))
 
