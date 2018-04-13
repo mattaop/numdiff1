@@ -14,15 +14,17 @@ def spatial_convergence_vec(solver, T, X, delta_t, delta_x):
     print(exact_list)
 
     x_list = np.linspace(-c.L / 2, c.L / 2, len(exact_list))
+    print("hei")
     plt.plot(x_list,exact_list[:,0])
     plt.show()
+    print("hei2")
 
     for j in range(c.M):
         print("inside for loop")
         x_points = 2 ** (j + 1)
         new_exact_list = np.zeros((x_points,2))
 
-        ratio = (len(exact_list[0]) - 1) / (x_points - 1)
+        ratio = (len(exact_list) - 1) / (x_points - 1)
         for h in range(x_points):
             new_exact_list[h] = exact_list[int(h * ratio)]
 
@@ -48,7 +50,7 @@ def spatial_convergence_vec(solver, T, X, delta_t, delta_x):
     return convergence_list, step_length_list
 
 def plot_convergence():
-    conv_list,step_length_list=spatial_convergence_vec(sl_v.solve_simple_lax, c.TIME_POINTS, c.SPACE_POINTS,c.delta_t,c.delta_x)
+    conv_list, step_length_list = spatial_convergence_vec(sl_v.solve_simple_lax, c.TIME_POINTS, c.SPACE_POINTS, c.delta_t, c.delta_x)
     print(conv_list[0])
     print(conv_list[1])
     plt.loglog(step_length_list,conv_list[0],label='rho')
