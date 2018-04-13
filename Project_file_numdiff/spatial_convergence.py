@@ -17,7 +17,9 @@ def spatial_convergence_vec(solver, T, X, delta_t, delta_x):
     #plt.plot(x_list,exact_list[:,0])
     #plt.show()
 
+
     for j in range(startnumber,c.M-1):
+
         x_points = 2 ** (j + 1)
         new_exact_list = np.zeros((x_points,2))
 
@@ -30,8 +32,10 @@ def spatial_convergence_vec(solver, T, X, delta_t, delta_x):
         step_length_list[j - startnumber] = delta_x
         u = solver(c.TIME_POINTS, x_points, delta_t, delta_x)
         j_list=u[-1]
+
         convergence_list[0][j-startnumber] = np.sqrt(delta_x * delta_t) * np.linalg.norm(new_exact_list[:,0] - j_list[:,0], 2)
         convergence_list[1][j-startnumber] = np.sqrt(delta_x * delta_t) * np.linalg.norm(new_exact_list[:,1] - j_list[:,1], 2)
+
 
         #x_list = np.linspace(-c.L/2, c.L/2, len(new_exact_list[:,0]))
         #x_list2 = np.linspace(-c.L/2, c.L/2, len(j_list[:,0]))
@@ -40,15 +44,21 @@ def spatial_convergence_vec(solver, T, X, delta_t, delta_x):
         #plt.legend()
         #plt.show()
 
+        print("Points: ", x_points)
+
     return convergence_list, step_length_list
 
 def plot_convergence():
-    conv_list, step_length_list = spatial_convergence_vec(sl_v.solve_simple_lax, c.TIME_POINTS, c.SPACE_POINTS, c.delta_t, c.delta_x)
+    conv_list, step_length_list = spatial_convergence_vec(up_v.solve_upwind, c.TIME_POINTS, c.SPACE_POINTS, c.delta_t, c.delta_x)
     print(conv_list[0])
     print(conv_list[1])
+
     plt.loglog(step_length_list,conv_list[0],label='rho')
     plt.loglog(step_length_list,conv_list[1],label='v')
+    plt.xlabel("Steplength ($\delta x$)")
+    plt.ylabel("Error")
     plt.grid()
+
     plt.legend()
     plt.show()
 
