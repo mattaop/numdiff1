@@ -56,8 +56,7 @@ def main():
     grid_rho,grid_v = solve_simple_lax(c.TIME_POINTS, c.SPACE_POINTS,c.RHO_0,c.delta_t,c.delta_x)
     #plot_simple_lax(c.TIME_POINTS,c.SPACE_POINTS,c.delta_x,grid_rho,grid_v)
 
-t0 = time()
-main()
-t1 = time()
-print("Time: ", t1 - t0)
+
+#main()
+
 

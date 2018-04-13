@@ -46,8 +46,6 @@ def main():
     #plot_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,0])
     #plot_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,1])
 
-t0 = time()
-main()
-t1 = time()
-print("Time: ", t1 - t0)
+#main()
+
 
