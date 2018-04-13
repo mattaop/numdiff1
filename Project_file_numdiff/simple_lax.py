@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import constants as c
+from time import time
 
 
 def rho_next_simple_lax(rho_last, v_last, delta_t, delta_x, j, time, position):
@@ -53,8 +54,10 @@ def plot_simple_lax(T,X,delta_x,grid_rho,grid_v):
 
 def main():
     grid_rho,grid_v = solve_simple_lax(c.TIME_POINTS, c.SPACE_POINTS,c.RHO_0,c.delta_t,c.delta_x)
-    plot_simple_lax(c.TIME_POINTS,c.SPACE_POINTS,c.delta_x,grid_rho,grid_v)
+    #plot_simple_lax(c.TIME_POINTS,c.SPACE_POINTS,c.delta_x,grid_rho,grid_v)
 
-#main()
-
+t0 = time()
+main()
+t1 = time()
+print("Time: ", t1 - t0)
 

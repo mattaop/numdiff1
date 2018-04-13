@@ -37,9 +37,9 @@ def time_convergence(solver):
 
     T_max = 5 #Time (minutes?) until we stop the simulation
     T_ex = 10000 #Number of time steps in the reference (exact) solution
-    
+
     delta_t_min = T_max/(T_ex-1) #The delta T-value used in the exact solution
-    
+
     u_ex = solver(T_ex, c.SPACE_POINTS,delta_t_min,c.delta_x)
 
     #print(u_ex)
@@ -59,7 +59,8 @@ def plot_time_convergence(solver):
     plt.semilogx()
     plt.semilogy()
     plt.legend()
-    plt.show() 
+    plt.show()
+
 
 print("Lax Fredrich")
 plot_time_convergence(sl_v.solve_simple_lax)
