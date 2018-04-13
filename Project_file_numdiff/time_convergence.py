@@ -1,23 +1,17 @@
 from time import time
 import numpy as np
 import matplotlib.pyplot as plt
-#import simple_lax as sl
 import simple_lax_vectorized as sl_v
-
 import upwind_vectorized as up_v
-
-#import upwind as up
 import constants as c
 import lax_wendroff as lw
 
-
-#solve_simple_lax(time_points, space_points, rho0, delta_t,delta_x)
-
 def time_error(solver, space_points, delta_x,T_max,T_ex,u_ex):
-    n = 12 #
+    n = 12
     error_list_rho = np.zeros(n)
     error_list_v = np.zeros(n)
     delta_t_list = np.zeros(n)
+    print(delta_x)
     for i in range(n):
         t0 = time()
         time_points = 2**(i+1) #Number of time points in each iteration
@@ -30,7 +24,7 @@ def time_error(solver, space_points, delta_x,T_max,T_ex,u_ex):
         error_list_v[i] = np.sqrt(delta_x*delta_t)*np.linalg.norm(error_v,2)
         delta_t_list[i] = delta_t
         t1 = time()
-        print("Points: ", 2**(i+1), " , Time: ", t1 - t0)
+        print("Points: ", time_points, " , Time: ", t1 - t0)
     return delta_t_list,error_list_rho,error_list_v
 
 def time_convergence(solver):
@@ -41,8 +35,6 @@ def time_convergence(solver):
     delta_t_min = T_max/(T_ex-1) #The delta T-value used in the exact solution
 
     u_ex = solver(T_ex, c.SPACE_POINTS,delta_t_min,c.delta_x)
-
-    #print(u_ex)
 
     delta_t_list,error_rho,error_v = time_error(solver,c.SPACE_POINTS,c.delta_x,T_max, T_ex,u_ex)
     return delta_t_list, error_rho,error_v
@@ -62,9 +54,9 @@ def plot_time_convergence(solver):
     plt.show()
 
 
-print("Lax Fredrich")
+print("Lax-Friedrich")
 plot_time_convergence(sl_v.solve_simple_lax)
 print("Upwind")
 plot_time_convergence(up_v.solve_upwind)
-print("Lax Wendroff")
+print("Lax-Wendroff")
 plot_time_convergence(lw.solve_lax_wendroff)
