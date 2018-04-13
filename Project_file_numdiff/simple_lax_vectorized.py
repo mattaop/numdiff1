@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import constants as c
+from time import time
 
 
 def f(u_last):
@@ -30,7 +31,6 @@ def one_step_simple_lax(u_last, X, delta_t, delta_x ,time):
     return u_next
 
 def solve_simple_lax(T, X, delta_t, delta_x):
-
     grid_u = c.initialize_grid(T, X, c.RHO_0)
     for i in range(1, T):
         time=i*delta_t
@@ -55,6 +55,12 @@ def plot_simple_lax_3d(T,delta_t,X,delta_x,grid_rho,grid_v):
 
 def main():
     grid_u = solve_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_t, c.delta_x)
-    plot_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,0])
-    plot_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,1])
+    #plot_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,0])
+    #plot_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,1])
+
+t0 = time()
 main()
+t1 = time()
+print("Time: ", t1 - t0)
+
+

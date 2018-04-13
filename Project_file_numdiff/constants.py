@@ -1,11 +1,13 @@
 import numpy as np
 
+
 M=7
 MAX_TIME=5*60 #seconds
-TIME_POINTS=1000
-#TIME_POINTS=10
-SPACE_POINTS=1500
-#SPACE_POINTS=2**(M)
+
+TIME_POINTS= 2000
+
+SPACE_POINTS=2**(M)
+
 
 L=5000 #meter
 
@@ -17,7 +19,6 @@ RHO_MAX=0.140
 E=100
 RHO_0=0.05
 
-# hei
 SIGMA=56.7
 MY=0
 TAU=30
