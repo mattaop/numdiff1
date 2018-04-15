@@ -7,6 +7,7 @@ import upwind_vectorized as up_v
 import upwind_vectorized_v2 as up_v2
 import constants as c
 import lax_wendroff as lw
+import lax_wendroff_v2 as lw2
 import mac_cormack as mc
 
 def time_error(solver, space_points, delta_x):
@@ -62,11 +63,11 @@ def plot_time_convergence_2(solver1, solver2, solver3, solver4):
     delta_t_list3, error_rho3, error_v3 = time_error(solver3, c.SPACE_POINTS, c.delta_x)
     delta_t_list4, error_rho4, error_v4 = time_error(solver4, c.SPACE_POINTS, c.delta_x)
     plt.figure()
-    plt.plot(delta_t_list1, error_rho1, label= r"Lax-Fredrich")
-    plt.plot(delta_t_list2, error_rho2, label= r"Lax-Fredrich v2")
-    plt.plot(delta_t_list3, error_rho3, label= r"Upwind")
-    plt.plot(delta_t_list4, error_rho4, label= r"Lax-Wendroff")
-    plt.title("Convergence plot of $\rho$ in time")
+    plt.loglog(delta_t_list1, error_rho1, label= r"Lax-Fredrich")
+    plt.loglog(delta_t_list2, error_rho2, label= r"Lax-Fredrich v2")
+    plt.loglog(delta_t_list3, error_rho3, label= r"Upwind")
+    plt.loglog(delta_t_list4, error_rho4, label= r"Lax-Wendroff")
+    plt.title(r"Convergence plot of $\rho$ in time")
     plt.xlabel(r"$\Delta t$")
     plt.ylabel("Error")
     plt.semilogx()
@@ -88,6 +89,6 @@ def plot_time_convergence_2(solver1, solver2, solver3, solver4):
 #print("Lax-Wendroff")
 #plot_time_convergence(lw.solve_lax_wendroff)
 #print("Lax-Wendroff V2")
-#plot_time_convergence(lw.solve_lax_wendroff_v2)
+#plot_time_convergence(lw2.solve_lax_wendroff)
 plot_time_convergence_2(sl_v.solve_simple_lax, sl_v2.solve_simple_lax, up_v2.solve_upwind, lw.solve_lax_wendroff)
 
