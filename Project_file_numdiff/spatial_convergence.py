@@ -4,10 +4,11 @@ import matplotlib.pyplot as plt
 import constants as c
 import simple_lax_vectorized as sl_v
 import upwind_vectorized as up_v
+import mac_cormack as mc
 
 
 def spatial_convergence_vec(solver, T, X, delta_t, delta_x):
-    startnumber = 1
+    startnumber = 4
     convergence_list = np.zeros((2, c.M-startnumber-1))
     u_exact = solver(T, X, delta_t, delta_x)
     exact_list = u_exact[-1]
@@ -37,19 +38,19 @@ def spatial_convergence_vec(solver, T, X, delta_t, delta_x):
         convergence_list[1][j-startnumber] = np.sqrt(delta_x * delta_t) * np.linalg.norm(new_exact_list[:,1] - j_list[:,1], 2)
 
 
-        #x_list = np.linspace(-c.L/2, c.L/2, len(new_exact_list[:,0]))
-        #x_list2 = np.linspace(-c.L/2, c.L/2, len(j_list[:,0]))
-        #plt.plot(x_list,new_exact_list[:,0],label="exact")
-        #plt.plot(x_list2,j_list[:,0],label="not exact")
-        #plt.legend()
-        #plt.show()
+        x_list = np.linspace(-c.L/2, c.L/2, len(new_exact_list[:,0]))
+        x_list2 = np.linspace(-c.L/2, c.L/2, len(j_list[:,0]))
+        plt.plot(x_list,new_exact_list[:,0],label="exact")
+        plt.plot(x_list2,j_list[:,0],label="not exact")
+        plt.legend()
+        plt.show()
 
         print("Points: ", x_points)
 
     return convergence_list, step_length_list
 
 def plot_convergence():
-    conv_list, step_length_list = spatial_convergence_vec(up_v.solve_upwind, c.TIME_POINTS, c.SPACE_POINTS, c.delta_t, c.delta_x)
+    conv_list, step_length_list = spatial_convergence_vec(mc.solve_mac_cormack, c.TIME_POINTS, c.SPACE_POINTS, c.delta_t, c.delta_x)
     print(conv_list[0])
     print(conv_list[1])
 

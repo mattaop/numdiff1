@@ -2,4 +2,4 @@
 *.pyc
 *.cpython-36.pyc
 *.xml
-*__pycache__
+__pycache__
