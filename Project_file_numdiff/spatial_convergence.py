@@ -7,7 +7,7 @@ import upwind_vectorized as up_v
 
 
 def spatial_convergence_vec(solver, T, X, delta_t, delta_x):
-    startnumber = 1
+    startnumber = 6
     convergence_list = np.zeros((2, c.M-startnumber-1))
     u_exact = solver(T, X, delta_t, delta_x)
     exact_list = u_exact[-1]
@@ -47,6 +47,8 @@ def plot_convergence():
     print(conv_list[0])
     print(conv_list[1])
     plt.loglog(step_length_list,conv_list[0],label='rho')
+    plt.show()
+    plt.figure()
     plt.loglog(step_length_list,conv_list[1],label='v')
     plt.grid()
     plt.legend()
