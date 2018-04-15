@@ -12,7 +12,7 @@ SPACE_POINTS = 2**(M)
 
 L=5000 #meter
 
-delta_t=0.01
+delta_t=0.03
 
 delta_x=L/(SPACE_POINTS-1)  #meter
 

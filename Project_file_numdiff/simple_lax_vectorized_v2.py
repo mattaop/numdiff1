@@ -24,7 +24,7 @@ def s(time, position, u_last, delta_t, delta_x, j):
 
 def u_next_simple_lax(u_last, delta_t, delta_x, j, time, position):
     return (u_last[j+1]+u_last[j-1])/2 - delta_t/(2*delta_x)*(f(u_last[j+1])-f(u_last[j-1])) \
-           - delta_t/delta_x*(f2(u_last[j+1], u_last[j])-f2(u_last[j-1], u_last[j]))\
+           - delta_t/(2*delta_x)*(f2(u_last[j+1], u_last[j])-f2(u_last[j-1], u_last[j]))\
            + delta_t*s(time, position, u_last, delta_t, delta_x, j)
 
 def one_step_simple_lax(u_last, X, delta_t, delta_x ,time):
@@ -66,4 +66,4 @@ def main():
     plot_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,0])
     #plot_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,1])
 
-main()
+#main()
