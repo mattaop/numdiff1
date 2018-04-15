@@ -6,7 +6,7 @@ import upwind_vectorized as up_v
 import upwind as up
 import constants as c
 
-def spatial_convergence_vec(solver,T,X,delta_t,delta_x):
+'''def spatial_convergence_vec(solver,T,X,delta_t,delta_x):
     convergence_list = np.zeros((2, c.M + 1))
     u_exact = solver(T, X, delta_t, delta_x)
     x_list = np.linspace(-c.L, c.L, len(u_exact[0]))
@@ -149,6 +149,6 @@ def time_convergence():
     plt.legend()
     plt.show()  
     """
-#time_convergence()
+#time_convergence()'''
         
         
