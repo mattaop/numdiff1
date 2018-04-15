@@ -2,10 +2,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 import constants as c
 
+def f2(u_last, u_m):
+    f_step = np.zeros(2)
+    f_step[:] = 0, c.C **2*u_last[0]/u_m[0]
+    return f_step
 
 def f(u_last):
     f_step = np.zeros(2)
-    f_step[:] = u_last[0]*u_last[1], (u_last[1]**2)/2 + c.C**2*np.log(u_last[0])
+    f_step[:] = u_last[0]*u_last[1], (u_last[1]**2)/2
     return f_step
 
 def s(time, position, u_last, delta_t, delta_x, j):
@@ -17,6 +21,7 @@ def s(time, position, u_last, delta_t, delta_x, j):
 
 def u_next_upwind(u_last, delta_t, delta_x, j, time, position):
     return u_last[j] - delta_t/delta_x*(f(u_last[j])-f(u_last[j-1])) \
+           - delta_t/delta_x*(f2(u_last[j+1], u_last[j])-f2(u_last[j], u_last[j]))\
            + delta_t*s(time, position, u_last, delta_t, delta_x, j)
 
 def one_step_upwind(u_last, X, delta_t, delta_x ,time):
