@@ -66,4 +66,4 @@ def main():
     grid_rho, grid_v = solve_upwind(grid_rho, grid_v, T, X, rho0, delta_t, delta_x, L, sigma, V0, rho_max, E, tau, c, my)
 
     plot_upwind(T,X,delta_x,grid_rho)
-main()
+#main()

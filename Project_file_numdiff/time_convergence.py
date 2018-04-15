@@ -3,14 +3,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 import simple_lax_vectorized as sl_v
 import upwind_vectorized as up_v
+import upwind_vectorized_v2 as up_v2
 import constants as c
 import lax_wendroff as lw
 import mac_cormack as mc
 
 def time_error(solver, space_points, delta_x):
-    m = 10  #2^m points for first iteration
-    n = 16  #2^n points for last iteration
-    T_max = 1 * 100  # Time (minutes?) until we stop the simulation
+    m = 5  #2^m points for first iteration
+    n = 10  #2^n points for last iteration
+    T_max = 1 * 20  # Time (minutes?) until we stop the simulation
     T_ex = 2**(n+1)  # Number of time steps in the reference (exact) solution
 
     delta_t_min = T_max / (T_ex - 1)  # The delta T-value used in the exact solution
@@ -59,6 +60,8 @@ def plot_time_convergence(solver):
 #plot_time_convergence(sl_v.solve_simple_lax)
 print("Upwind")
 plot_time_convergence(up_v.solve_upwind)
+print("Upwind 2")
+plot_time_convergence(up_v2.solve_upwind)
 #print("MacCormack")
 #plot_time_convergence(mc.solve_mac_cormack)
 print("Lax-Wendroff")
