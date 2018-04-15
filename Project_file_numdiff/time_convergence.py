@@ -1,22 +1,18 @@
 from time import time
 import numpy as np
 import matplotlib.pyplot as plt
-import simple_lax_vectorized as sl_v
-import simple_lax_vectorized_v2 as sl_v2
-import upwind_vectorized as up_v
-import upwind_vectorized_v2 as up_v2
 import constants as c
-import lax_wendroff as lw
-import mac_cormack as mc
+
 
 def time_error(solver, space_points, delta_x):
+
     m = 5  #2^m points for first iteration
-    n = 7  #2^n points for last iteration
+    n = 12  #2^n points for last iteration
     T_max = 1 * 20  # Time seconds until we stop the simulation
     T_ex = 2**(n+1)  # Number of time steps in the reference (exact) solution
 
     delta_t_min = T_max / (T_ex - 1)  # The delta T-value used in the exact solution
-    u_ex = solver(T_ex, c.SPACE_POINTS, delta_t_min, c.delta_x)
+    u_ex = solver(T_ex, space_points, delta_t_min, c.delta_x)
     error_list_rho = np.zeros(n-m)
     error_list_v = np.zeros(n-m)
     delta_t_list = np.zeros(n-m)
@@ -34,17 +30,13 @@ def time_error(solver, space_points, delta_x):
         delta_t_list[i-m] = delta_t
         t1 = time()
         print("Points: ", time_points, " , Time: ", t1 - t0)
-        x_list = np.linspace(-c.L/2, c.L/2, len(u_ex[-1,:,0]))
-        x_list2 = np.linspace(-c.L/2, c.L/2, len(u[-1,:,0]))
-        #plt.plot(x_list,u_ex[-1,:,0],label="exact")
-        #plt.plot(x_list2,u[-1,:,0],label="not exact")
-        #plt.legend()
-        #plt.show()
+
     return delta_t_list,error_list_rho,error_list_v
    
     
 def plot_time_convergence(solver):
-    delta_t_list, error_rho, error_v = time_error(solver, c.SPACE_POINTS, c.delta_x)
+    space_points=2**7
+    delta_t_list, error_rho, error_v = time_error(solver, space_points, c.delta_x)
     plt.figure()
     plt.plot(delta_t_list, error_rho, label=r"$\rho$")
     plt.plot(delta_t_list, error_v, label= "v")
@@ -71,6 +63,7 @@ def plot_time_convergence_2(solver1, solver2, solver3, solver4):
     plt.xlabel(r'$\Delta t$')
     plt.ylabel("Error")
     plt.legend()
+    plt.grid()
     plt.savefig("conv_rho_time.pdf")
     plt.show()
 
@@ -82,26 +75,11 @@ def plot_time_convergence_2(solver1, solver2, solver3, solver4):
     plt.title("Convergence plot of " + r'$v$' + " in time")
     plt.xlabel(r'$\Delta t$')
     plt.ylabel("Error")
+    plt.grid()
     plt.savefig("conv_v_time.pdf")
     plt.legend()
     plt.show()
 
 
 
-
-#print("Lax-Friedrich")
-#plot_time_convergence(sl_v.solve_simple_lax)
-#print("Lax-Friedrich V2")
-#plot_time_convergence(sl_v2.solve_simple_lax_v2)
-#print("Upwind")
-#plot_time_convergence(up_v.solve_upwind)
-#print("Upwind V2")
-#plot_time_convergence(up_v2.solve_upwind)
-#print("MacCormack")
-#plot_time_convergence(mc.solve_mac_cormack)
-#print("Lax-Wendroff")
-#plot_time_convergence(lw.solve_lax_wendroff)
-#print("Lax-Wendroff V2")
-#plot_time_convergence(lw.solve_lax_wendroff_v2)
-plot_time_convergence_2(sl_v.solve_simple_lax, sl_v2.solve_simple_lax, up_v2.solve_upwind, lw.solve_lax_wendroff)
 
