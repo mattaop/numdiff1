@@ -1,18 +1,18 @@
 import numpy as np
 
 
-M = 10
-MAX_TIME = 5*60 #seconds
+M = 7
+MAX_TIME = 500*60 #seconds
 
 
-TIME_POINTS = 1000
+TIME_POINTS = 10000
 
 SPACE_POINTS = 2**(M)
 
 
 L=5000 #meter
 
-delta_t=0.03
+delta_t=0.05
 
 delta_x=L/(SPACE_POINTS-1)  #meter
 
