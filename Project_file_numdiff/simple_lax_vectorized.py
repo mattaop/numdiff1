@@ -25,7 +25,7 @@ def u_next_simple_lax(u_last, delta_t, delta_x, j, time, position):
 
 def one_step_simple_lax(u_last, X, delta_t, delta_x ,time):
     u_next = np.zeros((X,2))
-    u_next[0,:] = c.RHO_0, c.safe_v(c.RHO_0)
+    u_next[0,:] = u_last[1][0], c.safe_v(u_last[1][0])
     for j in range(1,X-1):
         position=j*delta_x-c.L/2
         u_next[j] = u_next_simple_lax(u_last, delta_t, delta_x, j, time, position)
@@ -57,9 +57,9 @@ def plot_simple_lax_3d(T,delta_t,X,delta_x,grid_rho,grid_v):
     y=np.arange(0,T*delta_t,delta_t)
     x,y=np.meshgrid(x,y)
     ax.plot_surface(x, y, grid_rho,cmap=cm.coolwarm)
-    plt.show()
-    plt.figure()
-    plt.imshow(grid_rho,cmap=plt.get_cmap('rainbow'))
+    #plt.show()
+    #plt.figure()
+    #plt.imshow(grid_rho,cmap=plt.get_cmap('rainbow'))
 
 
     plt.show()
@@ -70,9 +70,9 @@ def plot_simple_lax_3d(T,delta_t,X,delta_x,grid_rho,grid_v):
     y = np.arange(0, T * delta_t, delta_t)
     x, y = np.meshgrid(x, y)
     ax.plot_surface(x, y, grid_v, cmap=cm.coolwarm)
-    plt.show()
-    plt.figure()
-    plt.imshow(grid_v, cmap=plt.get_cmap('rainbow'))
+    #plt.show()
+    #plt.figure()
+    #plt.imshow(grid_v, cmap=plt.get_cmap('rainbow'))
 
     plt.show()
 

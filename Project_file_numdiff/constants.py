@@ -6,7 +6,7 @@ M = 10
 MAX_TIME = 5*60 #seconds
 
 
-TIME_POINTS = 1000
+TIME_POINTS = 5000
 
 SPACE_POINTS = 2**(M)
 
@@ -25,10 +25,6 @@ E=100
 RHO_0=0.05
 
 SIGMA=100
-<<<<<<< HEAD
-=======
-
->>>>>>> 4f663255377f001df9f1971bcbea28b94c126534
 MY=0
 TAU=30
 C=15
@@ -44,7 +40,7 @@ def safe_v(rho):
 
 def q_in(time):
     if time<30:
-        return 1
+        return 0.5
     else:
         return 0
 
