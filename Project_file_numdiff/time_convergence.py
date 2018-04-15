@@ -10,7 +10,7 @@ import mac_cormack as mc
 
 def time_error(solver, space_points, delta_x):
     m = 5  #2^m points for first iteration
-    n = 10  #2^n points for last iteration
+    n = 8  #2^n points for last iteration
     T_max = 1 * 20  # Time (minutes?) until we stop the simulation
     T_ex = 2**(n+1)  # Number of time steps in the reference (exact) solution
 
@@ -58,11 +58,16 @@ def plot_time_convergence(solver):
 
 #print("Lax-Friedrich")
 #plot_time_convergence(sl_v.solve_simple_lax)
+#print("Lax-Friedrich V2")
+#plot_time_convergence(sl_v.solve_simple_lax_v2)
 print("Upwind")
 plot_time_convergence(up_v.solve_upwind)
-print("Upwind 2")
+print("Upwind V2")
 plot_time_convergence(up_v2.solve_upwind)
 #print("MacCormack")
 #plot_time_convergence(mc.solve_mac_cormack)
-print("Lax-Wendroff")
+#print("Lax-Wendroff")
 #plot_time_convergence(lw.solve_lax_wendroff)
+#print("Lax-Wendroff V2")
+#plot_time_convergence(lw.solve_lax_wendroff_v2)
+
