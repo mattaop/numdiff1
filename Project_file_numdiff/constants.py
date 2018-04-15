@@ -1,7 +1,7 @@
 import numpy as np
 
 
-M = 10
+M = 6
 MAX_TIME = 5*60 #seconds
 
 
@@ -21,7 +21,7 @@ RHO_MAX=0.140
 E=100
 RHO_0=0.05
 
-SIGMA=200
+SIGMA=500
 MY=0
 TAU=30
 C=15

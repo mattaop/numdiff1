@@ -19,11 +19,7 @@ def s(time, position, u_last, delta_t, delta_x, j):
     return s_step
 
 def u_next_upwind(u_last, delta_t, delta_x, j, time, position):
-    if u_last[j,1] < 0:
-        return u_last[j] - delta_t / delta_x * (f(u_last[j+1]) - f(u_last[j])) \
-               + delta_t * s(time, position, u_last, delta_t, delta_x, j)
-    else:
-        return u_last[j] - delta_t/delta_x*(f(u_last[j])-f(u_last[j-1])) \
+    return u_last[j] - delta_t/delta_x*(f(u_last[j])-f(u_last[j-1])) \
            + delta_t*s(time, position, u_last, delta_t, delta_x, j)
 
 def one_step_upwind(u_last, X, delta_t, delta_x ,time):
