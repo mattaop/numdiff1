@@ -22,7 +22,7 @@ def s(time, position, u_last, delta_t, delta_x, j):
 
 def u_approx_mac_cormack(u_last, delta_t, delta_x, j, time, position):
     return u_last[j] - delta_t / delta_x * (f(u_last[j]) - f(u_last[j - 1])) \
-               - delta_t/delta_x*(f2(u_last[j+1], u_last[j])-f2(u_last[j], u_last[j]))\
+               - delta_t/delta_x*(f2(u_last[j], u_last[j-1])-f2(u_last[j-1], u_last[j-1]))\
                + delta_t * s(time, position, u_last, delta_t, delta_x, j)
 
 def u_next_mac_cormack(u_last, u_approx, delta_t, delta_x, j, time, position):

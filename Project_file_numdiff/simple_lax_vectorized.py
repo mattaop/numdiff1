@@ -4,6 +4,9 @@ from mpl_toolkits.mplot3d import Axes3D
 import constants as c
 from matplotlib import cm
 from time import time
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import cm
+
 
 
 def f(u_last):
@@ -50,38 +53,41 @@ def plot_simple_lax(T,delta_t, X, delta_x, grid_u,grid_v):
     plt.plot(x, grid_v[T - 1])
     plt.show()
 
-def plot_simple_lax_3d(T,delta_t,X,delta_x,grid_rho,grid_v):
-    fig = plt.figure()
+def plot_simple_lax_3d_v(T,delta_t,X,delta_x,grid_v):
+    fig = plt.figure("Speed of cars (m/s)")
     ax = fig.gca(projection='3d')
     x=np.arange(-X*delta_x/2,X*delta_x/2,delta_x)
     y=np.arange(0,T*delta_t,delta_t)
     x,y=np.meshgrid(x,y)
-    ax.plot_surface(x, y, grid_rho,cmap=cm.coolwarm)
-    #plt.show()
-    #plt.figure()
-    #plt.imshow(grid_rho,cmap=plt.get_cmap('rainbow'))
-
-
+    surf=ax.plot_surface(x,y,grid_v,cmap=cm.coolwarm,linewidth=0)
+    ax.text2D(0.05, 0.95, "Speed of cars (m/s)", transform=ax.transAxes)
+    ax.set_xlabel("Distance (m)")
+    ax.set_ylabel("Time (s)")
+    ax.set_zlabel("Speed (m/s)")
+    fig.colorbar(surf,shrink=0.5)
     plt.show()
 
-    fig = plt.figure()
-    ax = fig.gca(projection='3d')
-    x = np.arange(-X * delta_x / 2, X * delta_x / 2, delta_x)
-    y = np.arange(0, T * delta_t, delta_t)
-    x, y = np.meshgrid(x, y)
-    ax.plot_surface(x, y, grid_v, cmap=cm.coolwarm)
-    #plt.show()
-    #plt.figure()
-    #plt.imshow(grid_v, cmap=plt.get_cmap('rainbow'))
 
+def plot_simple_lax_3d_rho(T,delta_t,X,delta_x,grid_rho):
+    fig = plt.figure("Density of cars (car/m)")
+    ax = fig.gca(projection='3d')
+    x=np.arange(-X*delta_x/2,X*delta_x/2,delta_x)
+    y=np.arange(0,T*delta_t,delta_t)
+    x,y=np.meshgrid(x,y)
+    surf=ax.plot_surface(x,y,grid_rho,cmap=cm.coolwarm,linewidth=0)
+    ax.text2D(0.05, 0.95, "Density of cars (car/m)", transform=ax.transAxes)
+    ax.set_xlabel("Distance (m)")
+    ax.set_ylabel("Time (s)")
+    ax.set_zlabel("Density (car/m)")
+    fig.colorbar(surf,shrink=0.5)
     plt.show()
 
 def main():
     grid_u = solve_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_t, c.delta_x)
-    plot_simple_lax_3d(c.TIME_POINTS,c.delta_t, c.SPACE_POINTS, c.delta_x, grid_u[:,:,0],grid_u[:,:,1])
+    plot_simple_lax_3d_v(c.TIME_POINTS,c.delta_t, c.SPACE_POINTS, c.delta_x, grid_u[:,:,0],grid_u[:,:,1])
     #plot_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,1])
 
-main()
+#main()
 
 
 

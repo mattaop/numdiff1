@@ -6,7 +6,9 @@ M = 10
 MAX_TIME = 5*60 #seconds
 
 
+
 TIME_POINTS = 5000
+
 
 SPACE_POINTS = 2**(M)
 
@@ -14,6 +16,7 @@ SPACE_POINTS = 2**(M)
 SPACE_POINTS=1000
 
 L=5000 #meter
+
 
 delta_t=0.1
 
@@ -43,6 +46,7 @@ def q_in(time):
         return 0.5
     else:
         return 0
+
 
 def phi(x):
     return (2*np.pi*SIGMA**2)**(-0.5)*np.exp(-x**2/(2*SIGMA**2))
