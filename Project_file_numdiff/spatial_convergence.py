@@ -59,7 +59,7 @@ def plot_convergence(method):
     plt.show()
     plt.figure()
     plt.loglog(step_length_list,conv_list[1],label='v')
-    plt.xlabel("Steplength ($\delta x$)")
+    plt.xlabel("Steplength ($\Delta x$)")
     plt.ylabel("Error")
     plt.grid()
 

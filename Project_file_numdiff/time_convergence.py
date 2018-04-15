@@ -11,8 +11,8 @@ import mac_cormack as mc
 
 def time_error(solver, space_points, delta_x):
     m = 5  #2^m points for first iteration
-    n = 12  #2^n points for last iteration
-    T_max = 1 * 20  # Time (minutes?) until we stop the simulation
+    n = 7  #2^n points for last iteration
+    T_max = 1 * 20  # Time seconds until we stop the simulation
     T_ex = 2**(n+1)  # Number of time steps in the reference (exact) solution
 
     delta_t_min = T_max / (T_ex - 1)  # The delta T-value used in the exact solution
@@ -61,18 +61,32 @@ def plot_time_convergence_2(solver1, solver2, solver3, solver4):
     delta_t_list2, error_rho2, error_v2 = time_error(solver2, c.SPACE_POINTS, c.delta_x)
     delta_t_list3, error_rho3, error_v3 = time_error(solver3, c.SPACE_POINTS, c.delta_x)
     delta_t_list4, error_rho4, error_v4 = time_error(solver4, c.SPACE_POINTS, c.delta_x)
+
     plt.figure()
-    plt.plot(delta_t_list1, error_rho1, label= r"Lax-Fredrich")
-    plt.plot(delta_t_list2, error_rho2, label= r"Lax-Fredrich v2")
-    plt.plot(delta_t_list3, error_rho3, label= r"Upwind")
-    plt.plot(delta_t_list4, error_rho4, label= r"Lax-Wendroff")
-    plt.title("Convergence plot of $\rho$ in time")
-    plt.xlabel(r"$\Delta t$")
+    plt.loglog(delta_t_list1, error_rho1, label= r"Lax-Fredrich")
+    plt.loglog(delta_t_list2, error_rho2, label= r"Lax-Fredrich v2")
+    plt.loglog(delta_t_list3, error_rho3, label= r"Upwind")
+    plt.loglog(delta_t_list4, error_rho4, label= r"Lax-Wendroff")
+    plt.title("Convergence plot of "+ r'$\rho$' +" in time")
+    plt.xlabel(r'$\Delta t$')
     plt.ylabel("Error")
-    plt.semilogx()
-    plt.semilogy()
+    plt.legend()
+    plt.savefig("conv_rho_time.pdf")
+    plt.show()
+
+    plt.figure()
+    plt.loglog(delta_t_list1, error_v1, label=r"Lax-Fredrich")
+    plt.loglog(delta_t_list2, error_v2, label=r"Lax-Fredrich v2")
+    plt.loglog(delta_t_list3, error_v3, label=r"Upwind")
+    plt.loglog(delta_t_list4, error_v4, label=r"Lax-Wendroff")
+    plt.title("Convergence plot of " + r'$v$' + " in time")
+    plt.xlabel(r'$\Delta t$')
+    plt.ylabel("Error")
+    plt.savefig("conv_v_time.pdf")
     plt.legend()
     plt.show()
+
+
 
 
 #print("Lax-Friedrich")
