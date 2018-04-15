@@ -3,9 +3,14 @@ import matplotlib.pyplot as plt
 import constants as c
 
 
+def f2(u_last, u_m):
+    f_step = np.zeros(2)
+    f_step[:] = 0, c.C **2*u_last[0]/u_m[0]
+    return f_step
+
 def f(u_last):
     f_step = np.zeros(2)
-    f_step[:] = u_last[0]*u_last[1], (u_last[1]**2)/2 + c.C**2*np.log(u_last[0])
+    f_step[:] = u_last[0]*u_last[1], (u_last[1]**2)/2
     return f_step
 
 def s(time, position, u_last, delta_t, delta_x, j):
@@ -16,17 +21,15 @@ def s(time, position, u_last, delta_t, delta_x, j):
     return s_step
 
 def u_approx_mac_cormack(u_last, delta_t, delta_x, j, time, position):
-    if u_last[j, 1] < 0:
-        return u_last[j] - delta_t / delta_x * (f(u_last[j+1]) - f(u_last[j])) \
-               + delta_t * s(time, position, u_last, delta_t, delta_x, j)
-    else:
-        return u_last[j] - delta_t / delta_x * (f(u_last[j]) - f(u_last[j - 1])) \
+    return u_last[j] - delta_t / delta_x * (f(u_last[j]) - f(u_last[j - 1])) \
+               - delta_t/delta_x*(f2(u_last[j+1], u_last[j])-f2(u_last[j], u_last[j]))\
                + delta_t * s(time, position, u_last, delta_t, delta_x, j)
 
 def u_next_mac_cormack(u_last, u_approx, delta_t, delta_x, j, time, position):
     u_approx[j+1] = u_approx_mac_cormack(u_last, delta_t, delta_x, j+1, time, position+delta_x)
-    return (u_approx[j]+u_last[j]- delta_t/delta_x*(f(u_approx[j+1])-f(u_approx[j]))
-            +delta_t*s(time, position, u_approx, delta_t, delta_x, j))/2
+    return (u_approx[j]+u_last[j]- delta_t/delta_x*(f(u_approx[j+1])- f(u_approx[j])) \
+            - delta_t/delta_x*(f2(u_approx[j+1], u_approx[j])-f2(u_approx[j], u_approx[j]))\
+            + delta_t*s(time, position, u_approx, delta_t, delta_x, j))/2
 
 def one_step_mac_cormack(u_last, X, delta_t, delta_x ,time, rho0, L):
     u_next = np.zeros((X,2))
@@ -61,4 +64,4 @@ def main():
     plot_mac_cormack(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:, :, 0])
     plot_mac_cormack(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:, :, 1])
 
-#main()
+main()

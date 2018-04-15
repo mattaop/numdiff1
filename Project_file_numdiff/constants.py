@@ -1,10 +1,14 @@
 import numpy as np
 
 
-M=14
-MAX_TIME=5*60 #seconds
 
-TIME_POINTS= 20000
+M = 10
+MAX_TIME = 5*60 #seconds
+
+
+TIME_POINTS = 1000
+
+SPACE_POINTS = 2**(M)
 
 #SPACE_POINTS=2**(M)
 SPACE_POINTS=1000
@@ -21,6 +25,10 @@ E=100
 RHO_0=0.05
 
 SIGMA=100
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4f663255377f001df9f1971bcbea28b94c126534
 MY=0
 TAU=30
 C=15

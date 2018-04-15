@@ -2,4 +2,5 @@
 *.pyc
 *.cpython-36.pyc
 *.xml
-*__pycache__
+__pycache__
+Project_file_numdiff\__pycache__
