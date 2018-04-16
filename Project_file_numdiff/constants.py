@@ -5,7 +5,7 @@ import numpy as np
 M = 7
 MAX_TIME = 500*60 #seconds
 
-TIME_POINTS = 5000
+TIME_POINTS = 500
 
 
 SPACE_POINTS = 2**(M)
@@ -15,7 +15,7 @@ SPACE_POINTS = 2**(M)
 
 L=5000 #meter
 
-delta_t=0.05
+delta_t=0.01
 
 
 delta_x=L/(SPACE_POINTS-1)  #meter

@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 import constants as c
+from matplotlib import cm
 from time import time
 
 
@@ -51,6 +53,7 @@ def plot_simple_lax(T, X, delta_x, grid_u):
     plt.plot(x,grid_u[T-1])
     plt.show()
 
+
 def plot_simple_lax_3d(T,delta_t,X,delta_x,grid_rho,grid_v):
     fig = plt.figure()
     ax = fig.gca(projection='3d')
@@ -59,6 +62,35 @@ def plot_simple_lax_3d(T,delta_t,X,delta_x,grid_rho,grid_v):
     x,y=np.meshgrid(x,y)
     ax.plot_surface(x, y, grid_rho,cmap=cm.coolwarm)
 
+    plt.show()
+
+def plot_simple_lax2_3d_v(T,delta_t,X,delta_x,grid_v):
+    fig = plt.figure("Speed of cars (m/s)")
+    ax = fig.gca(projection='3d')
+    x=np.arange(-X*delta_x/2,X*delta_x/2,delta_x)
+    y=np.arange(0,T*delta_t,delta_t)
+    x,y=np.meshgrid(x,y)
+    surf=ax.plot_surface(x,y,grid_v,cmap=cm.coolwarm,linewidth=0)
+    ax.text2D(0.05, 0.95, "Speed of cars (m/s)", transform=ax.transAxes)
+    ax.set_xlabel("Distance (m)")
+    ax.set_ylabel("Time (s)")
+    ax.set_zlabel("Speed (m/s)")
+    fig.colorbar(surf,shrink=0.5)
+    plt.show()
+
+
+def plot_simple_lax2_3d_rho(T,delta_t,X,delta_x,grid_rho):
+    fig = plt.figure("Density of cars (car/m)")
+    ax = fig.gca(projection='3d')
+    x=np.arange(-X*delta_x/2,X*delta_x/2,delta_x)
+    y=np.arange(0,T*delta_t,delta_t)
+    x,y=np.meshgrid(x,y)
+    surf=ax.plot_surface(x,y,grid_rho,cmap=cm.coolwarm,linewidth=0)
+    ax.text2D(0.05, 0.95, "Density of cars (car/m)", transform=ax.transAxes)
+    ax.set_xlabel("Distance (m)")
+    ax.set_ylabel("Time (s)")
+    ax.set_zlabel("Density (car/m)")
+    fig.colorbar(surf,shrink=0.5)
     plt.show()
 
 def main():

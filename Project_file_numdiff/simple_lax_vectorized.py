@@ -4,8 +4,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import constants as c
 from matplotlib import cm
 from time import time
-from mpl_toolkits.mplot3d import Axes3D
-from matplotlib import cm
+
 
 
 
