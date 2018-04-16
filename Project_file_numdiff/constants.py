@@ -40,18 +40,11 @@ def safe_v(rho):
     return V0 * (1 - rho / RHO_MAX) / (1 + E * (rho / RHO_MAX) ** 4)
 
 def q_in(time):
-<<<<<<< HEAD
     if time>30:
         return 0
     else:
         return 0.5
-=======
-    if time<30:
-        return 0.5
-    else:
-        return 0
 
->>>>>>> e2b74cc0ab11b95a7f93b79fcacc7fd7b07bcb2d
 
 def phi(x):
     return (2*np.pi*SIGMA**2)**(-0.5)*np.exp(-x**2/(2*SIGMA**2))
