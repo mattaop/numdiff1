@@ -1,18 +1,22 @@
 import numpy as np
 
 
-M = 10
-MAX_TIME = 5*60 #seconds
 
+M = 7
+MAX_TIME = 500*60 #seconds
 
-TIME_POINTS = 1000
+TIME_POINTS = 500
+
 
 SPACE_POINTS = 2**(M)
 
+#SPACE_POINTS=2**(M)
+#SPACE_POINTS=1000
 
 L=5000 #meter
 
 delta_t=0.01
+
 
 delta_x=L/(SPACE_POINTS-1)  #meter
 
@@ -36,7 +40,11 @@ def safe_v(rho):
     return V0 * (1 - rho / RHO_MAX) / (1 + E * (rho / RHO_MAX) ** 4)
 
 def q_in(time):
-    return 2
+    if time<30:
+        return 0.5
+    else:
+        return 0
+
 
 def phi(x):
     return (2*np.pi*SIGMA**2)**(-0.5)*np.exp(-x**2/(2*SIGMA**2))

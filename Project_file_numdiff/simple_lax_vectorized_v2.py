@@ -6,14 +6,16 @@ from matplotlib import cm
 from time import time
 
 
-
+def f2(u_last, u_m):
+    f_step = np.zeros(2)
+    f_step[:] = 0, c.C **2*u_last[0]/u_m[0]
+    return f_step
 
 def f(u_last):
-    #if u_last[0] < c.RHO_0-0.001:
-        #print(u_last)
     f_step = np.zeros(2)
-    f_step[:] = u_last[0]*u_last[1], (u_last[1]**2)/2 + c.C**2*np.log(u_last[0])
+    f_step[:] = u_last[0]*u_last[1], (u_last[1]**2)/2
     return f_step
+
 
 def s(time, position, u_last, delta_t, delta_x, j):
     s_step = np.zeros(2)
@@ -23,11 +25,13 @@ def s(time, position, u_last, delta_t, delta_x, j):
     return s_step
 
 def u_next_simple_lax(u_last, delta_t, delta_x, j, time, position):
-    return (u_last[j+1]+u_last[j-1])/2 - delta_t/(2*delta_x)*(f(u_last[j+1])-f(u_last[j-1])) + delta_t*s(time, position, u_last, delta_t, delta_x, j)
+    return (u_last[j+1]+u_last[j-1])/2 - delta_t/(2*delta_x)*(f(u_last[j+1])-f(u_last[j-1])) \
+           - delta_t/(2*delta_x)*(f2(u_last[j+1], u_last[j])-f2(u_last[j-1], u_last[j]))\
+           + delta_t*s(time, position, u_last, delta_t, delta_x, j)
 
 def one_step_simple_lax(u_last, X, delta_t, delta_x ,time):
     u_next = np.zeros((X,2))
-    u_next[0,:] = u_last[1][0], c.safe_v(u_last[1][0])
+    u_next[0,:] = c.RHO_0, c.safe_v(c.RHO_0)
     for j in range(1,X-1):
         position=j*delta_x-c.L/2
         u_next[j] = u_next_simple_lax(u_last, delta_t, delta_x, j, time, position)
@@ -43,16 +47,24 @@ def solve_simple_lax(T, X, delta_t, delta_x):
         grid_u[i]=one_step_simple_lax(grid_u[i-1], X, delta_t, delta_x, time)
     return grid_u
 
-def plot_simple_lax(T,delta_t, X, delta_x, grid_u,grid_v):
+def plot_simple_lax(T, X, delta_x, grid_u):
     x=np.linspace(-X/2*delta_x,X/2*delta_x,X)
     plt.figure()
     plt.plot(x,grid_u[T-1])
     plt.show()
-    plt.figure()
-    plt.plot(x, grid_v[T - 1])
+
+
+def plot_simple_lax_3d(T,delta_t,X,delta_x,grid_rho,grid_v):
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+    x=np.arange(-X*delta_x/2,X*delta_x/2,delta_x)
+    y=np.arange(0,T*delta_t,delta_t)
+    x,y=np.meshgrid(x,y)
+    ax.plot_surface(x, y, grid_rho,cmap=cm.coolwarm)
+
     plt.show()
 
-def plot_simple_lax_3d_v(T,delta_t,X,delta_x,grid_v):
+def plot_simple_lax2_3d_v(T,delta_t,X,delta_x,grid_v):
     fig = plt.figure("Speed of cars (m/s)")
     ax = fig.gca(projection='3d')
     x=np.arange(-X*delta_x/2,X*delta_x/2,delta_x)
@@ -67,7 +79,7 @@ def plot_simple_lax_3d_v(T,delta_t,X,delta_x,grid_v):
     plt.show()
 
 
-def plot_simple_lax_3d_rho(T,delta_t,X,delta_x,grid_rho):
+def plot_simple_lax2_3d_rho(T,delta_t,X,delta_x,grid_rho):
     fig = plt.figure("Density of cars (car/m)")
     ax = fig.gca(projection='3d')
     x=np.arange(-X*delta_x/2,X*delta_x/2,delta_x)
@@ -83,10 +95,7 @@ def plot_simple_lax_3d_rho(T,delta_t,X,delta_x,grid_rho):
 
 def main():
     grid_u = solve_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_t, c.delta_x)
-    plot_simple_lax_3d_v(c.TIME_POINTS,c.delta_t, c.SPACE_POINTS, c.delta_x, grid_u[:,:,0],grid_u[:,:,1])
+    plot_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,0])
     #plot_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,1])
 
 #main()
-
-
-

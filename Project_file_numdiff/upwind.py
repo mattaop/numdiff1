@@ -14,8 +14,10 @@ def rho_next_upwind(rho_last, v_last, delta_t, delta_x, j, time, position,sigma)
     return rho_last[j] - delta_t/delta_x*(rho_last[j]*v_last[j]-rho_last[j-1]*v_last[j-1])+ delta_t*q_in(time)*phi(position,sigma)
 
 def v_next_upwind(rho_last, v_last, delta_t, delta_x,j, tau, V0, rho_max, E, c, my):
-    return v_last[j] - delta_t/delta_x*(v_last[j]**2/2+c**2*np.log(rho_last[j])-v_last[j-1]**2/2-c**2*np.log(rho_last[j-1]))\
-           +(delta_t/tau)*((V0*(1-rho_last[j]/rho_max))/(1+E*(rho_last[j]/rho_max)**4)-v_last[j])+my*delta_t*(v_last[j+1]-2*v_last[j]+v_last[j-1])/(rho_last[j]*delta_x**2)
+    return v_last[j] - delta_t/delta_x*(v_last[j]**2/2-v_last[j-1]**2/2)\
+           - delta_t*c**2/(delta_x*rho_last[j])*(rho_last[j+1]-rho_last[j])\
+           +(delta_t/tau)*((V0*(1-rho_last[j]/rho_max))/(1+E*(rho_last[j]/rho_max)**4)-v_last[j])\
+           + my*delta_t*(v_last[j+1]-2*v_last[j]+v_last[j-1])/(rho_last[j]*delta_x**2)
 
 
 def one_step_upwind(rho_last, v_last, X, delta_t,delta_x ,time,L,sigma, rho0,V0,rho_max,E,tau,c,my):
@@ -64,4 +66,4 @@ def main():
     grid_rho, grid_v = solve_upwind(grid_rho, grid_v, T, X, rho0, delta_t, delta_x, L, sigma, V0, rho_max, E, tau, c, my)
 
     plot_upwind(T,X,delta_x,grid_rho)
-main()
+#main()

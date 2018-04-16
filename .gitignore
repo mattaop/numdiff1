@@ -1,4 +1,5 @@
 *.idea
+*.pdf
 *.pyc
 *.cpython-36.pyc
 *.xml
