@@ -1,4 +1,3 @@
-from time import time
 import numpy as np
 import matplotlib.pyplot as plt
 import constants as c
@@ -48,15 +47,15 @@ def plot_time_convergence(solver):
     plt.legend()
     plt.show()
 
-def plot_time_convergence_2(solver1, solver2, solver3, solver4):
+def plot_time_convergence_2(solver1,  solver3, solver4):
     delta_t_list1, error_rho1, error_v1 = time_error(solver1, c.SPACE_POINTS, c.delta_x)
-    delta_t_list2, error_rho2, error_v2 = time_error(solver2, c.SPACE_POINTS, c.delta_x)
+    #delta_t_list2, error_rho2, error_v2 = time_error(solver2, c.SPACE_POINTS, c.delta_x)
     delta_t_list3, error_rho3, error_v3 = time_error(solver3, c.SPACE_POINTS, c.delta_x)
     delta_t_list4, error_rho4, error_v4 = time_error(solver4, c.SPACE_POINTS, c.delta_x)
 
     plt.figure()
     plt.loglog(delta_t_list1, error_rho1, label= r"Lax-Fredrich")
-    plt.loglog(delta_t_list2, error_rho2, label= r"Lax-Fredrich v2")
+    #plt.loglog(delta_t_list2, error_rho2, label= r"Lax-Fredrich v2")
     plt.loglog(delta_t_list3, error_rho3, label= r"Upwind")
     plt.loglog(delta_t_list4, error_rho4, label= r"Lax-Wendroff")
     plt.title(r"Convergence plot of $\rho$ in time")
@@ -69,7 +68,7 @@ def plot_time_convergence_2(solver1, solver2, solver3, solver4):
 
     plt.figure()
     plt.loglog(delta_t_list1, error_v1, label=r"Lax-Fredrich")
-    plt.loglog(delta_t_list2, error_v2, label=r"Lax-Fredrich v2")
+    #plt.loglog(delta_t_list2, error_v2, label=r"Lax-Fredrich v2")
     plt.loglog(delta_t_list3, error_v3, label=r"Upwind")
     plt.loglog(delta_t_list4, error_v4, label=r"Lax-Wendroff")
     plt.title("Convergence plot of " + r'$v$' + " in time")
