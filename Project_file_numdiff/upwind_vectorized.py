@@ -38,7 +38,7 @@ def solve_upwind(T, X, delta_t, delta_x):
     return grid_u
 
 def plot_upwind(T, X, delta_x, grid_u):
-    x=np.linspace(-X*delta_x,X*delta_x,X)
+    x = np.linspace(-X / 2 * delta_x, X / 2 * delta_x, X)
     plt.figure()
     plt.plot(x,grid_u[T-1])
     plt.show()
@@ -46,5 +46,5 @@ def plot_upwind(T, X, delta_x, grid_u):
 def main():
     grid_u = solve_upwind(c.TIME_POINTS, c.SPACE_POINTS, c.delta_t, c.delta_x)
     plot_upwind(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,0])
-    plot_upwind(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,1])
+    #plot_upwind(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,1])
 #main()
