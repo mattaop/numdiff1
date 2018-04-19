@@ -17,18 +17,14 @@ def time_error(solver, space_points, delta_x):
     delta_t_list = np.zeros(n-m)
     print(delta_x)
     for i in range(m,n):
-        t0 = time()
         time_points = 2**(i+1) #Number of time points in each iteration
         delta_t = T_max/(time_points-1) #delta t in each iteration
-        #print(delta_t)
         u = solver(time_points, space_points, delta_t,delta_x)
         error_rho = u_ex[-1,:,0]-u[-1,:,0]
         error_v = u_ex[-1,:,1]-u[-1,:,1]
         error_list_rho[i-m] = np.sqrt(delta_x*delta_t)*np.linalg.norm(error_rho,2)
         error_list_v[i-m] = np.sqrt(delta_x*delta_t)*np.linalg.norm(error_v,2)
         delta_t_list[i-m] = delta_t
-        t1 = time()
-        print("Points: ", time_points, " , Time: ", t1 - t0)
 
     return delta_t_list,error_list_rho,error_list_v
    
