@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+
 import constants as c
 import convergence as conv
 import lax_wendroff as lw
@@ -30,7 +31,7 @@ if __name__ == "__main__":
 
 
 
-            }[4]        #<-------Write number of the function you want to test. For example, for finding the best sensor location, write 8 in the [ ].
+            }[4]        #<-------Write number of the function you want to test.
     if Master_Flag =='Lax-Friedrich':
         grid_u = sl_v.solve_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_t, c.delta_x)
         sl_v.plot_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:, :, 0])
