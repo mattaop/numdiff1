@@ -2,10 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import constants as c
+import functions as func
 from matplotlib import cm
 from time import time
-from mpl_toolkits.mplot3d import Axes3D
-from matplotlib import cm
+
 
 
 
@@ -18,7 +18,7 @@ def f(u_last):
 
 def s(time, position, u_last, delta_t, delta_x, j):
     s_step = np.zeros(2)
-    s_step[:] = c.q_in(time)*c.phi(position), (1/c.TAU)*((c.V0*(1-u_last[j,0]/c.RHO_MAX))/(1+c.E*(u_last[j,0]/c.RHO_MAX)**4)
+    s_step[:] = func.q_in(time)*func.phi(position), (1/c.TAU)*((c.V0*(1-u_last[j,0]/c.RHO_MAX))/(1+c.E*(u_last[j,0]/c.RHO_MAX)**4)
                                                          - u_last[j,1])+c.MY*delta_t*(u_last[j+1,1]-2*u_last[j,1]
                                                          + u_last[j-1,1])/(u_last[j,0]*delta_x**2)
     return s_step
@@ -39,7 +39,7 @@ def one_step_simple_lax(u_last, X, delta_t, delta_x ,time):
     return u_next
 
 def solve_simple_lax(T, X, delta_t, delta_x):
-    grid_u = c.initialize_grid(T, X, c.RHO_0)
+    grid_u = func.initialize_grid(T, X, c.RHO_0)
     for i in range(1, T):
         time=i*delta_t
         grid_u[i]=one_step_simple_lax(grid_u[i-1], X, delta_t, delta_x, time)
