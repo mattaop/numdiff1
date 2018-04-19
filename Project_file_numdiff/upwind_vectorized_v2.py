@@ -5,6 +5,7 @@ import constants as c
 from matplotlib import cm
 from time import time
 
+#Dette må ryddes opp i
 def f2(u_last, u_m):
     f_step = np.zeros(2)
     f_step[:] = 0, c.C **2*u_last[0]/u_m[0]

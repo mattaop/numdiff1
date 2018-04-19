@@ -56,7 +56,8 @@ if __name__ == "__main__":
 
 
     elif Master_Flag=='Spatial Convergence':
-        sc.plot_spatial_convergence_lax(sl_v.solve_simple_lax, sl_v2.solve_simple_lax)
+        #sc.plot_spatial_convergence_lax(sl_v.solve_simple_lax, sl_v2.solve_simple_lax)
+        sc.plot_spatial_convergence(up_v2.solve_upwind,lw.solve_lax_wendroff)
 
     elif Master_Flag==' 3d plot':
         grid_u = sl_v.solve_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_t, c.delta_x)
