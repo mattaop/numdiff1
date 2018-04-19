@@ -2,36 +2,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import constants as c
+import functions as func
 from matplotlib import cm
 from time import time
 
 
-def g(u_last, delta_x, j):
-    g_step = np.zeros(2)
-    g_step[:] = 0, - c.C**2*(u_last[j+1,0]-u_last[j,0])/(delta_x*u_last[j,0]) \
-                + c.MY*(u_last[j+1,1]-2*u_last[j,1]+ u_last[j-1,1])/(u_last[j,0]*delta_x**2)
-    return g_step
-
-
-def f(u_last):
-    f_step = np.zeros(2)
-    f_step[:] = u_last[0]*u_last[1], (u_last[1]**2)/2
-    return f_step
-
-def s(time, position, u_last, j):
-    s_step = np.zeros(2)
-    s_step[:] = c.q_in(time)*c.phi(position), \
-                (1/c.TAU)*((c.V0*(1-u_last[j,0]/c.RHO_MAX))/(1+c.E*(u_last[j,0]/c.RHO_MAX)**4)- u_last[j,1])
-    return s_step
 
 def u_next_upwind(u_last, delta_t, delta_x, j, time, position):
-    return u_last[j] - delta_t/delta_x*(f(u_last[j])-f(u_last[j-1])) \
-           + delta_t*g(u_last, delta_x, j)\
-           + delta_t*s(time, position, u_last, j)
+    return u_last[j] - delta_t/delta_x*(func.f(u_last[j])-func.f(u_last[j-1])) \
+           + delta_t*func.g(u_last, delta_x, j)\
+           + delta_t*func.s(time, position, u_last, j)
 
 def one_step_upwind(u_last, X, delta_t, delta_x ,time):
     u_next = np.zeros((X,2))
-    u_next[0,:] = u_last[1][0], c.safe_v(u_last[1][0])
+    u_next[0,:] = u_last[1][0], func.safe_v(u_last[1][0])
     for j in range(1,X-1):
         position=j*delta_x-c.L/2
         u_next[j] = u_next_upwind(u_last, delta_t, delta_x, j, time, position)
@@ -41,7 +25,7 @@ def one_step_upwind(u_last, X, delta_t, delta_x ,time):
     return u_next
 
 def solve_upwind(T, X, delta_t, delta_x):
-    grid_u = c.initialize_grid(T, X, c.RHO_0)
+    grid_u = func.initialize_grid(T, X, c.RHO_0)
     for i in range(1, T):
         time=i*delta_t
         grid_u[i]=one_step_upwind(grid_u[i-1], X, delta_t, delta_x, time)

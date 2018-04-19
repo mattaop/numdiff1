@@ -3,109 +3,74 @@ import matplotlib.pyplot as plt
 import constants as c
 
 
+def time_error(solver, space_points, delta_x):
+    m = 5  # 2^m points for first iteration
+    n = 12  # 2^n points for last iteration
+    T_max = 1 * 20  # Time seconds until we stop the simulation
+    T_ex = 2 ** (n + 1)  # Number of time steps in the reference (exact) solution
 
-def spatial_convergence_vec(solver, T, X, delta_t, delta_x,M):
-    startnumber = 3
-    convergence_list = np.zeros((2, M-startnumber-1))
-    u_exact = solver(T, X, delta_t, delta_x)
-    exact_list = u_exact[-1]
-    step_length_list = np.zeros(M -startnumber-1)
+    delta_t_min = T_max / (T_ex - 1)  # The delta T-value used in the exact solution
+    u_ex = solver(T_ex, space_points, delta_t_min, c.delta_x)
+    error_list_rho = np.zeros(n - m)
+    error_list_v = np.zeros(n - m)
+    delta_t_list = np.zeros(n - m)
+    print(delta_x)
+    for i in range(m, n):
+        time_points = 2 ** (i + 1)  # Number of time points in each iteration
+        delta_t = T_max / (time_points - 1)  # delta t in each iteration
+        u = solver(time_points, space_points, delta_t, delta_x)
+        error_rho = u_ex[-1, :, 0] - u[-1, :, 0]
+        error_v = u_ex[-1, :, 1] - u[-1, :, 1]
+        error_list_rho[i - m] = np.sqrt(delta_t) * np.linalg.norm(error_rho, 2)
+        error_list_v[i - m] = np.sqrt(delta_t) * np.linalg.norm(error_v, 2)
+        delta_t_list[i - m] = delta_t
 
-    for j in range(startnumber,M-1):
-
-        x_points = 2**(j+1)
-        new_exact_list = np.zeros((x_points,2))
-        ratio = (len(exact_list) - 1) / (x_points - 1)
-        for h in range(x_points):
-            new_exact_list[h] = exact_list[int(h * ratio)]
-
-        delta_x = c.L / (x_points - 1)
-        step_length_list[j - startnumber] = delta_x
-        u = solver(c.TIME_POINTS, x_points, delta_t, delta_x)
-        j_list=u[-1]
-
-        convergence_list[0][j-startnumber] = np.sqrt(delta_x * delta_t) * np.linalg.norm(new_exact_list[:,0] - j_list[:,0], 2)
-        convergence_list[1][j-startnumber] = np.sqrt(delta_x * delta_t) * np.linalg.norm(new_exact_list[:,1] - j_list[:,1], 2)
-
-        print("Points: ", x_points)
-
-    return step_length_list,convergence_list
-
-'''def plot_convergence(method):
-    conv_list, step_length_list = spatial_convergence_vec(method, c.TIME_POINTS, c.SPACE_POINTS, c.delta_t, c.delta_x)
+    return delta_t_list, error_list_rho, error_list_v
 
 
-    plt.loglog(step_length_list,conv_list[0],label='rho')
-    plt.show()
+def plot_general_convergence(solver):
+    space_points = 2 ** 7
+    delta_t_list, error_rho, error_v = time_error(solver, space_points, c.delta_x)
     plt.figure()
-    plt.loglog(step_length_list,conv_list[1],label='v')
-    plt.xlabel("Steplength ($\Delta x$)")
+    plt.plot(delta_t_list, error_rho, label=r"$\rho$")
+    plt.plot(delta_t_list, error_v, label="v")
+    plt.title("Convergence plot in time and space")
+    plt.xlabel(r"$\Delta t$")
     plt.ylabel("Error")
-    plt.grid()
-    plt.legend()
-    plt.show()'''
-
-def plot_spatial_convergence_lax(solver1, solver2):
-    M=14
-    time_points=100
-    space_points=2**M
-    delta_t=0.01
-    delta_x=c.L/(space_points-1)
-    delta_x_list1, conv_1 = spatial_convergence_vec(solver1, time_points,space_points,delta_t, delta_x,M)
-    delta_x_list2, conv_2 = spatial_convergence_vec(solver2, time_points,space_points,delta_t, delta_x,M)
-
-    plt.figure()
-    plt.loglog(delta_x_list1, conv_1[0], label= r"Lax-Fredrich")
-    plt.loglog(delta_x_list2, conv_2[0], label= r"Lax-Fredrich v2")
-    plt.title("Convergence plot of "+ r'$\rho$' +" in space")
-    plt.xlabel(r'$\Delta x$')
-    plt.ylabel("Error")
-    plt.legend()
-    plt.savefig("conv_rho_space_lax.pdf")
-    plt.show()
-
-    plt.figure()
-    plt.loglog(delta_x_list1, conv_1[1], label=r"Lax-Fredrich")
-    plt.loglog(delta_x_list2, conv_2[1], label=r"Lax-Fredrich v2")
-    plt.title("Convergence plot of " + r'$v$' + " in space")
-    plt.xlabel(r'$\Delta x$')
-    plt.ylabel("Error")
-    plt.savefig("conv_v_space_lax.pdf")
+    plt.semilogx()
+    plt.semilogy()
     plt.legend()
     plt.show()
 
-def plot_general_convergence(solver1, solver2, solver3,solver4):
-    M=10
-    time_points = 1000
-    space_points = 2**M
-    delta_t = 0.01
-    delta_x = c.L / (space_points - 1)
 
-    delta_x_list1, conv_1 = spatial_convergence_vec(solver1, time_points, space_points, delta_t, delta_x, M)
-    delta_x_list2, conv_2 = spatial_convergence_vec(solver2, time_points, space_points, delta_t, delta_x, M)
-    delta_x_list3, conv_3 = spatial_convergence_vec(solver3, time_points, space_points, delta_t, delta_x, M)
-    delta_x_list4, conv_4 = spatial_convergence_vec(solver4, time_points, space_points, delta_t, delta_x, M)
+def plot_general_convergence_2(solver1, solver2, solver3, solver4):
+    delta_t_list1, error_rho1, error_v1 = time_error(solver1, c.SPACE_POINTS, c.delta_x)
+    delta_t_list2, error_rho2, error_v2 = time_error(solver2, c.SPACE_POINTS, c.delta_x)
+    delta_t_list3, error_rho3, error_v3 = time_error(solver3, c.SPACE_POINTS, c.delta_x)
+    delta_t_list4, error_rho4, error_v4 = time_error(solver4, c.SPACE_POINTS, c.delta_x)
 
     plt.figure()
-    plt.loglog(delta_x_list1, conv_3[0], label=r"Lax-Friedrich")
-    plt.loglog(delta_x_list2, conv_3[0], label= r"Upwind")
-    plt.loglog(delta_x_list3, conv_4[0], label= r"Lax-Wendroff")
-    plt.loglog(delta_x_list3, conv_4[0], label=r"MacCormack")
-    plt.title("Convergence plot of "+ r'$\rho$' +" in space")
-    plt.xlabel(r'$\Delta x$')
+    plt.loglog(delta_t_list1, error_rho1, label=r"Lax-Friedrich")
+    plt.loglog(delta_t_list2, error_rho2, label=r"Upwind")
+    plt.loglog(delta_t_list3, error_rho3, label=r"Lax-Wendroff")
+    plt.loglog(delta_t_list4, error_rho4, label=r"MacCormack")
+    plt.title(r"Convergence plot of $\rho$ in time and space")
+    plt.xlabel(r"$\Delta t$")
     plt.ylabel("Error")
     plt.legend()
     plt.grid()
-    plt.savefig("conv_rho_space.pdf")
+    #plt.savefig("conv_rho_time_space.pdf")
     plt.show()
 
     plt.figure()
-    #plt.loglog(delta_x_list3, conv_3[1], label=r"Upwind")
-    plt.loglog(delta_x_list4, conv_4[1], label=r"Lax-Wendroff")
-    plt.title("Convergence plot of " + r'$v$' + " in space")
-    plt.xlabel(r'$\Delta x$')
+    plt.loglog(delta_t_list1, error_v1, label=r"Lax-Friedrich")
+    plt.loglog(delta_t_list2, error_v2, label=r"Upwind")
+    plt.loglog(delta_t_list3, error_v3, label=r"Lax-Wendroff")
+    plt.loglog(delta_t_list4, error_v4, label=r"MacCormac")
+    plt.title("Convergence plot of " + r'$v$' + " in time and space")
+    plt.xlabel(r'$\Delta t$')
     plt.ylabel("Error")
-    plt.legend()
     plt.grid()
-    plt.savefig("conv_v_space.pdf")
+    #plt.savefig("conv_v_time_space.pdf")
+    plt.legend()
     plt.show()

@@ -59,7 +59,7 @@ def plot_time_convergence_2(solver1,  solver2, solver3, solver4):
     plt.ylabel("Error")
     plt.legend()
     plt.grid()
-    plt.savefig("conv_rho_time.pdf")
+    #plt.savefig("conv_rho_time.pdf")
     plt.show()
 
     plt.figure()
@@ -71,7 +71,7 @@ def plot_time_convergence_2(solver1,  solver2, solver3, solver4):
     plt.xlabel(r'$\Delta t$')
     plt.ylabel("Error")
     plt.grid()
-    plt.savefig("conv_v_time.pdf")
+    #plt.savefig("conv_v_time.pdf")
     plt.legend()
     plt.show()
 
