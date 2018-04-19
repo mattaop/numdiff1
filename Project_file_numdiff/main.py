@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
 
 
-            }[3]        #<-------Write number of the function you want to test. For example, for finding the best sensor location, write 8 in the [ ].
+            }[]        #<-------Write number of the function you want to test. For example, for finding the best sensor location, write 8 in the [ ].
     if Master_Flag =='Lax-Friedrich':
         grid_u = sl_v.solve_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_t, c.delta_x)
         sl_v.plot_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:, :, 0])
@@ -57,6 +57,7 @@ if __name__ == "__main__":
 
     elif Master_Flag=='Spatial Convergence':
         sc.plot_spatial_convergence(sl_v.solve_simple_lax, mc_v2.solve_mac_cormack)
+
 
     elif Master_Flag==' 3d plot':
         grid_u = sl_v.solve_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_t, c.delta_x)

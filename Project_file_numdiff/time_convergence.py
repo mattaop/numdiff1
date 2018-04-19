@@ -64,9 +64,9 @@ def plot_time_convergence_2(solver1,  solver2, solver3, solver4):
 
     plt.figure()
     plt.loglog(delta_t_list1, error_v1, label=r"Lax-Friedrich")
-    #plt.loglog(delta_t_list2, error_v2, label=r"Lax-Fredrich v2")
-    plt.loglog(delta_t_list3, error_v3, label=r"Upwind")
-    plt.loglog(delta_t_list4, error_v4, label=r"Lax-Wendroff")
+    plt.loglog(delta_t_list2, error_v2, label=r"Upwind")
+    plt.loglog(delta_t_list3, error_v3, label=r"Lax-Wendroff")
+    plt.loglog(delta_t_list4, error_v4, label=r"MacCormac")
     plt.title("Convergence plot of " + r'$v$' + " in time")
     plt.xlabel(r'$\Delta t$')
     plt.ylabel("Error")
