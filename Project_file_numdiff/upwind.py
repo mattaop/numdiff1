@@ -1,69 +1,77 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
-def safe_v(rho, V0, rho_max, E):
-    return V0*(1-rho/rho_max)/(1+E*(rho/rho_max)**4)
-
-def q_in(time):
-    return 40
-
-def phi(x, sigma):
-    return (2*np.pi*sigma**2)**(-0.5)*np.exp(-x**2/(2*sigma**2))
-
-def rho_next_upwind(rho_last, v_last, delta_t, delta_x, j, time, position,sigma):
-    return rho_last[j] - delta_t/delta_x*(rho_last[j]*v_last[j]-rho_last[j-1]*v_last[j-1])+ delta_t*q_in(time)*phi(position,sigma)
-
-def v_next_upwind(rho_last, v_last, delta_t, delta_x,j, tau, V0, rho_max, E, c, my):
-    return v_last[j] - delta_t/delta_x*(v_last[j]**2/2-v_last[j-1]**2/2)\
-           - delta_t*c**2/(delta_x*rho_last[j])*(rho_last[j+1]-rho_last[j])\
-           +(delta_t/tau)*((V0*(1-rho_last[j]/rho_max))/(1+E*(rho_last[j]/rho_max)**4)-v_last[j])\
-           + my*delta_t*(v_last[j+1]-2*v_last[j]+v_last[j-1])/(rho_last[j]*delta_x**2)
+from mpl_toolkits.mplot3d import Axes3D
+import constants as c
+import functions as func
+from matplotlib import cm
+from time import time
 
 
-def one_step_upwind(rho_last, v_last, X, delta_t,delta_x ,time,L,sigma, rho0,V0,rho_max,E,tau,c,my):
-    rho_next = np.zeros(X)
-    v_next=np.zeros(X)
-    rho_next[0]=rho0
-    v_next[0]=safe_v(rho0,V0,rho_max,E)
+
+def u_next_upwind(u_last, delta_t, delta_x, j, time, position):
+    return u_last[j] - delta_t/delta_x*(func.f(u_last[j])-func.f(u_last[j-1])) \
+           + delta_t*func.g(u_last, delta_x, j)\
+           + delta_t*func.s(time, position, u_last, j)
+
+def one_step_upwind(u_last, X, delta_t, delta_x ,time):
+    u_next = np.zeros((X,2))
+    #u_next[0, :] = c.RHO_0, c.safe_v(c.RHO_0)
+    u_next[0,:] = u_last[1][0], c.safe_v(u_last[1][0])
     for j in range(1,X-1):
-        position=j*delta_x-L/2
-        rho_next[j], v_next[j]=rho_next_upwind(rho_last,v_last,delta_t,delta_x, j ,time,position,sigma),\
-                                 v_next_upwind(rho_last,v_last,delta_t,delta_x, j, tau, V0, rho_max, E, c, my)
-    rho_next[X-1]=2*rho_next[X-2]-rho_next[X-3]
-    v_next[X-1]=2*v_next[X-2]-v_next[X-3]
-    return rho_next, v_next
+        position=j*delta_x-c.L/2
+        u_next[j] = u_next_upwind(u_last, delta_t, delta_x, j, time, position)
+        u_next[j][0] = min(c.RHO_MAX, u_next[j][0])
+        u_next[j][1] = max(0, u_next[j][1])
+    u_next[X-1]=2*u_next[X-2]-u_next[X-3]
+    return u_next
 
-def solve_upwind(grid_rho, grid_v, T, X, rho0,delta_t,delta_x,L,sigma,V0,rho_max,E,tau,c,my):
-    for i in range(1,T):
+def solve_upwind(T, X, MAX_TIME):
+    grid_u = func.initialize_grid(T, X, c.RHO_0)
+    delta_x = c.L/(X-1)
+    delta_t = MAX_TIME/(T-1)
+    for i in range(1, T):
         time=i*delta_t
-        grid_rho[i], grid_v[i]=one_step_upwind(grid_rho[i-1], grid_v[i-1], X, delta_t,delta_x ,time,L,sigma, rho0,V0,rho_max,E,tau,c,my)
-    return grid_rho, grid_v
+        grid_u[i]=one_step_upwind(grid_u[i-1], X, delta_t, delta_x, time)
+    return grid_u
 
-def plot_upwind(T,X,delta_x,grid_rho):
+def plot_upwind(T, X, grid_u):
+    delta_x = c.L/(X-1)
     x=np.linspace(-X*delta_x,X*delta_x,X)
-    plt.plot(x,grid_rho[T-1])
+    plt.figure()
+    plt.plot(x,grid_u[T-1])
+    plt.title("Space points "+str(X))
+    plt.show()
+
+
+def plot_simple_lax_3d(T,delta_t,X,delta_x,grid_rho,grid_v):
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+    x=np.arange(-X*delta_x/2,X*delta_x/2,delta_x)
+    y=np.arange(0,T*delta_t,delta_t)
+    x,y=np.meshgrid(x,y)
+    ax.plot_surface(x, y, grid_rho,cmap=cm.coolwarm)
+    #plt.show()
+    #plt.figure()
+    #plt.imshow(grid_rho,cmap=plt.get_cmap('rainbow'))
+
+    plt.show()
+
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+    x = np.arange(-X * delta_x / 2, X * delta_x / 2, delta_x)
+    y = np.arange(0, T * delta_t, delta_t)
+    x, y = np.meshgrid(x, y)
+    ax.plot_surface(x, y, grid_v, cmap=cm.coolwarm)
+    #plt.show()
+    #plt.figure()
+    #plt.imshow(grid_v, cmap=plt.get_cmap('rainbow'))
+
     plt.show()
 
 def main():
-    T = 1000
-    X = 2**8
-    V0 = 120
-    rho_max = 140
-    E = 100
-    rho0 = 10
-    delta_t = 0.01
-    delta_x = 20  # meter
-    L = delta_x * X  # meter
-    sigma = 56.7
-    my = 600
-    tau = 0.5
-    c = 54
+    grid_u = solve_upwind(c.TIME_POINTS, c.SPACE_POINTS, c.MAX_TIME)
+    plot_simple_lax_3d(c.TIME_POINTS,c.delta_t, c.SPACE_POINTS, c.delta_x, grid_u[:,:,0],grid_u[:,:,0])
+    #plot_upwind(c.TIME_POINTS, c.SPACE_POINTS, grid_u[:,:,0])
+    #plot_upwind(c.TIME_POINTS, c.SPACE_POINTS, grid_u[:,:,1])
 
-    grid_rho=np.zeros((T,X))
-    grid_v=np.zeros((T,X))
-    grid_rho[0]=np.ones(X)*rho0
-    grid_v[0]=safe_v(grid_rho[0], V0, rho_max, E)
-    grid_rho, grid_v = solve_upwind(grid_rho, grid_v, T, X, rho0, delta_t, delta_x, L, sigma, V0, rho_max, E, tau, c, my)
-
-    plot_upwind(T,X,delta_x,grid_rho)
 #main()

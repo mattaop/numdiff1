@@ -1,10 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import constants as c
-import simple_lax_vectorized as sl_v
-import upwind_vectorized as up_v
-import upwind_vectorized_v2 as up_v2
-import mac_cormack as mc
 
 """
 def spatial_convergence_vec(solver, T, X, delta_t, delta_x):

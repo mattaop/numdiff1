@@ -4,7 +4,6 @@ from mpl_toolkits.mplot3d import Axes3D
 import constants as c
 import functions as func
 from matplotlib import cm
-from time import time
 
 
 def u_next_lax_friedrichs(u_last, delta_t, delta_x, j, time, position):
