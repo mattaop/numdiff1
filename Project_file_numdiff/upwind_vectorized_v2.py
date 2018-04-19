@@ -71,7 +71,12 @@ def plot_simple_lax_3d(T,delta_t,X,delta_x,grid_rho,grid_v):
 def main():
     grid_u = solve_upwind(c.TIME_POINTS, c.SPACE_POINTS, c.MAX_TIME)
     plot_simple_lax_3d(c.TIME_POINTS,c.delta_t, c.SPACE_POINTS, c.delta_x, grid_u[:,:,0],grid_u[:,:,0])
+<<<<<<< HEAD
 
     #plot_upwind(c.TIME_POINTS, c.SPACE_POINTS, grid_u[:,:,0])
     #plot_upwind(c.TIME_POINTS, c.SPACE_POINTS, grid_u[:,:,1])
+=======
+    #plot_upwind(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,0])
+    #plot_upwind(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,1])
+>>>>>>> 6cbc333f723bca09f6ba64b0af514f786824de85
 #main()
