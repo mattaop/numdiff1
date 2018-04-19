@@ -10,6 +10,11 @@ def time_error(solver, space_points):
     T_max = 1 * 20  # Time seconds until we stop the simulation
     T_ex = 2**(n+1)  # Number of time steps in the reference (exact) solution
     u_ex = solver(T_ex, space_points, T_max)
+    delta_t_list = np.zeros(n-m+1)
+    delta_x = c.L / (space_points - 1)
+    for i in range(m,n+1):
+        delta_t_list[i-m] = T_max/(2**(i+1)-1)
+        print("CFL-condition: delta_t = ", delta_t_list[i-m], " < ", delta_x / (c.V0+c.C), " = delta_x/(V0+C)")
     error_list_rho = np.zeros(n-m)
     error_list_v = np.zeros(n-m)
     delta_t_list = np.zeros(n-m)

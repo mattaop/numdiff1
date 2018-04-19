@@ -6,15 +6,14 @@ import simple_lax_vectorized as slv
 
 
 
-def spatial_convergence_vec(solver, T, X, delta_t, MAX_TIME, M):
-    startnumber = 3
+def spatial_convergence_vec(solver, T, X, MAX_TIME, M):
+    startnumber = 2
     convergence_list = np.zeros((2, M-startnumber-1))
     u_exact = solver(T, X, MAX_TIME)
     exact_list = u_exact[-1]
     step_length_list = np.zeros(M -startnumber-1)
 
     for j in range(startnumber,M-1):
-
         x_points = 2 ** (j + 1)
         new_exact_list = np.zeros((x_points,2))
         ratio = (len(exact_list) - 1) / (x_points - 1)
@@ -26,8 +25,8 @@ def spatial_convergence_vec(solver, T, X, delta_t, MAX_TIME, M):
         u = solver(c.TIME_POINTS, x_points, MAX_TIME)
         j_list=u[-1]
 
-        convergence_list[0][j-startnumber] = np.sqrt(delta_x * delta_t) * np.linalg.norm(new_exact_list[:,0] - j_list[:,0], 2)
-        convergence_list[1][j-startnumber] = np.sqrt(delta_x * delta_t) * np.linalg.norm(new_exact_list[:,1] - j_list[:,1], 2)
+        convergence_list[0][j-startnumber] = np.sqrt(delta_x) * np.linalg.norm(new_exact_list[:,0] - j_list[:,0], 2)
+        convergence_list[1][j-startnumber] = np.sqrt(delta_x) * np.linalg.norm(new_exact_list[:,1] - j_list[:,1], 2)
         x = np.linspace(-2500,2500, x_points)
         plt.figure()
         plt.plot(x, j_list[:,0], label='Test')
@@ -83,14 +82,18 @@ def plot_spatial_convergence_lax(solver1, solver2):
     plt.show()
 
 def plot_spatial_convergence(solver3,solver4):
-    M=10
+    M=11
+    MAX_TIME = 10
     time_points = 1000
     space_points = 2**M
-    delta_t = 0.1
-    delta_x = c.L / (space_points - 1)
+    delta_t = MAX_TIME/(time_points-1)
+    delta_x = c.L/(space_points-1)
+    print("delta_t: ", delta_t)
+    print("delta_x: ", delta_x)
+    print("CFL-condition: delta_t = ", delta_t, " < ", delta_x/(c.V0+c.C), " = delta_x/(V0+C)")
 
     #delta_x_list3, conv_3 = spatial_convergence_vec(solver3, time_points, space_points, delta_t, delta_x, M)
-    delta_x_list4, conv_4 = spatial_convergence_vec(solver4, time_points, space_points, delta_t, delta_x, M)
+    delta_x_list4, conv_4 = spatial_convergence_vec(solver4, time_points, space_points, MAX_TIME, M)
 
     plt.figure()
     #plt.loglog(delta_x_list3, conv_3[0], label= r"Upwind")
