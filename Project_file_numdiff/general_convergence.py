@@ -6,7 +6,7 @@ import constants as c
 def error(solver):
     m = 5  # 2^m points for first iteration
     n = 12  # 2^n points for last iteration
-    T_Max = 1 * 20  # Time seconds until we stop the simulation
+    T_Max = 1*20  # Time seconds until we stop the simulation
     Ref_T = 2**(n+1)  # Number of time steps in the reference (exact) solution
     Ref_X = Ref_T
      # The delta T-value used in the exact solution
@@ -30,7 +30,7 @@ def error(solver):
 
 def plot_general_convergence(solver):
     space_points = 2 ** 7
-    delta_t_list, error_rho, error_v = time_error(solver, space_points, c.delta_x)
+    delta_t_list, error_rho, error_v = error(solver)
     plt.figure()
     plt.plot(delta_t_list, error_rho, label=r"$\rho$")
     plt.plot(delta_t_list, error_v, label="v")
@@ -44,10 +44,10 @@ def plot_general_convergence(solver):
 
 
 def plot_general_convergence_2(solver1, solver2, solver3, solver4):
-    delta_list1, error_rho1, error_v1 = error(solver1, c.SPACE_POINTS, c.delta_x)
-    delta_list2, error_rho2, error_v2 = error(solver2, c.SPACE_POINTS, c.delta_x)
-    delta_list3, error_rho3, error_v3 = error(solver3, c.SPACE_POINTS, c.delta_x)
-    delta_list4, error_rho4, error_v4 = error(solver4, c.SPACE_POINTS, c.delta_x)
+    delta_list1, error_rho1, error_v1 = error(solver1)
+    delta_list2, error_rho2, error_v2 = error(solver2)
+    delta_list3, error_rho3, error_v3 = error(solver3)
+    delta_list4, error_rho4, error_v4 = error(solver4)
 
     plt.figure()
     plt.loglog(delta_list1, error_rho1, label=r"Lax-Friedrich")
