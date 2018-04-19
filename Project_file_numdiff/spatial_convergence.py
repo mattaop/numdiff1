@@ -1,10 +1,22 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import constants as c
-import upwind_vectorized_v2 as up
-import simple_lax_vectorized as slv
+import simple_lax_vectorized as sl_v
+import upwind_vectorized as up_v
+import upwind_vectorized_v2 as up_v2
+import mac_cormack as mc
 
-
+"""
+def spatial_convergence_vec(solver, T, X, delta_t, delta_x):
+    startnumber = 3
+    convergence_list = np.zeros((2, c.M-startnumber-1))
+    u_exact = solver(T, X, delta_t, delta_x)
+    exact_list = u_exact[-1]
+    step_length_list = np.zeros(c.M -startnumber-1)
+    x_list = np.linspace(-c.L / 2, c.L / 2, len(exact_list))
+    plt.plot(x_list,exact_list[:,0])
+    plt.show()
+"""
 
 def spatial_convergence_vec(solver, T, X, MAX_TIME, M):
     startnumber = 4
@@ -24,7 +36,6 @@ def spatial_convergence_vec(solver, T, X, MAX_TIME, M):
         step_length_list[j - startnumber] = delta_x
         u = solver(c.TIME_POINTS, x_points, MAX_TIME)
         j_list=u[-1]
-
         convergence_list[0][j-startnumber] = np.sqrt(delta_x) * np.linalg.norm(new_exact_list[:,0] - j_list[:,0], 2)
         convergence_list[1][j-startnumber] = np.sqrt(delta_x) * np.linalg.norm(new_exact_list[:,1] - j_list[:,1], 2)
         x = np.linspace(-2500,2500, x_points)
@@ -72,7 +83,7 @@ def plot_spatial_convergence_lax(solver1, solver2):
     plt.show()
 
     plt.figure()
-    plt.loglog(delta_x_list1, conv_1[1], label=r"Lax-Fredrich")
+    #plt.loglog(delta_x_list1, conv_1[1], label=r"Lax-Fredrich")
     plt.loglog(delta_x_list2, conv_2[1], label=r"Lax-Fredrich v2")
     plt.title("Convergence plot of " + r'$v$' + " in space")
     plt.xlabel(r'$\Delta x$')
@@ -116,3 +127,4 @@ def plot_spatial_convergence(solver3,solver4):
     plt.grid()
     plt.savefig("conv_v_space.pdf")
     plt.show()
+

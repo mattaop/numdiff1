@@ -44,8 +44,8 @@ def plot_lax_wendroff(T, X, delta_x, grid_u):
     plt.plot(x,grid_u[T-1])
     plt.show()
 
-def main():
+'''def main():
     grid_u = solve_lax_wendroff(c.TIME_POINTS, c.SPACE_POINTS, c.MAX_TIME)
     plot_lax_wendroff(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,0])
     plot_lax_wendroff(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,1])
-main()
+main()'''
