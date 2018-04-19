@@ -9,15 +9,15 @@ import mac_cormack as mc
 
 
 def spatial_convergence_vec(solver, T, X, delta_t, delta_x):
-    startnumber = 6
+    startnumber = 3
     convergence_list = np.zeros((2, c.M-startnumber-1))
     u_exact = solver(T, X, delta_t, delta_x)
     exact_list = u_exact[-1]
     step_length_list = np.zeros(c.M -startnumber-1)
 
-    #x_list = np.linspace(-c.L / 2, c.L / 2, len(exact_list))
-    #plt.plot(x_list,exac t_list[:,0])
-    #plt.show()
+    x_list = np.linspace(-c.L / 2, c.L / 2, len(exact_list))
+    plt.plot(x_list,exact_list[:,0])
+    plt.show()
 
 
     for j in range(startnumber,c.M-1):
@@ -39,12 +39,12 @@ def spatial_convergence_vec(solver, T, X, delta_t, delta_x):
         convergence_list[1][j-startnumber] = np.sqrt(delta_x * delta_t) * np.linalg.norm(new_exact_list[:,1] - j_list[:,1], 2)
 
 
-        '''x_list = np.linspace(-c.L/2, c.L/2, len(new_exact_list[:,0]))
+        x_list = np.linspace(-c.L/2, c.L/2, len(new_exact_list[:,0]))
         x_list2 = np.linspace(-c.L/2, c.L/2, len(j_list[:,0]))
         plt.plot(x_list,new_exact_list[:,0],label="exact")
         plt.plot(x_list2,j_list[:,0],label="not exact")
         plt.legend()
-        plt.show()'''
+        plt.show()
 
         print("Points: ", x_points)
 
@@ -66,4 +66,4 @@ def plot_convergence(method):
     plt.legend()
     plt.show()
 
-#plot_convergence()
+plot_convergence(up_v2.solve_upwind)

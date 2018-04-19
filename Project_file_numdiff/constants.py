@@ -2,23 +2,23 @@ import numpy as np
 
 
 
-M = 7
+M = 12
 MAX_TIME = 500*60 #seconds
 
 
 
 
-TIME_POINTS = 5000
+TIME_POINTS = 1000
 
 
-SPACE_POINTS = 2**(M)
+#SPACE_POINTS = 2**(M)
 
 #SPACE_POINTS=2**(M)
 SPACE_POINTS=1000
 
 L=5000 #meter
 
-delta_t=0.05
+delta_t=0.25
 
 
 delta_x=L/(SPACE_POINTS-1)  #meter
@@ -28,8 +28,8 @@ RHO_MAX=0.140
 E=100
 RHO_0=0.05
 
-SIGMA=100
-MY=0
+SIGMA=300
+MY=2
 TAU=30
 C=15
 
@@ -41,10 +41,10 @@ def initialize_grid(T, X, rho0):
 
 def safe_v(rho):
     return V0 * (1 - rho / RHO_MAX) / (1 + E * (rho / RHO_MAX) ** 4)
-
+print(safe_v(RHO_0))
 def q_in(time):
     if time<30:
-        return 0.5
+        return 0.01
     else:
         return 0
 
