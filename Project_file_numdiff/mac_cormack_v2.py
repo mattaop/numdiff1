@@ -6,12 +6,12 @@ import functions as func
 def u_approx_mac_cormack(u_last, delta_t, delta_x, j, time, position):
     return u_last[j] - delta_t/delta_x*(func.f(u_last[j]) - func.f(u_last[j-1])) \
                + delta_t*func.g(u_last, delta_x, j)\
-               + delta_t*func.s(time, position+delta_x, u_last, delta_t, delta_x, j)
+               + delta_t*func.s(time, position+delta_x, u_last, j)
 
 def u_next_mac_cormack(u_last, u_approx, delta_t, delta_x, j, time, position):
     return (u_approx[j]+u_last[j]- (delta_t)/(2*delta_x)*(func.f(u_approx[j+1])- func.f(u_approx[j]))\
             + delta_t*func.g(u_approx, delta_x, j)\
-            + delta_t*func.s(time, position, u_approx, delta_t, delta_x, j))/2
+            + delta_t*func.s(time, position, u_approx, j))/2
 
 def one_step_mac_cormack(u_last, X, delta_t, delta_x ,time, rho0, L):
     u_next = np.zeros((X,2))

@@ -5,7 +5,7 @@ import convergence as conv
 import lax_wendroff as lw
 import simple_lax as sl
 import simple_lax_vectorized as sl_v
-import simple_lax_vectorized_v2 as sl_v2
+import lax_friedrichs as lf
 import spatial_convergence as sc
 import time_convergence as tc
 
@@ -51,7 +51,7 @@ if __name__ == "__main__":
         lw.plot_lax_wendroff(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:, :, 1])
 
     elif Master_Flag=='Time Convergence':
-        tc.plot_time_convergence_2(sl_v2.solve_simple_lax, up_v2.solve_upwind,
+        tc.plot_time_convergence_2(lf.solve_lax_friedrichs, up_v2.solve_upwind,
                                 lw.solve_lax_wendroff, mc_v2.solve_mac_cormack)
 
 
