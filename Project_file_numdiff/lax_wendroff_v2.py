@@ -30,8 +30,8 @@ def one_step_lax_wendroff(u_last, X, delta_t, delta_x ,time, rho0, L):
 
 def solve_lax_wendroff(T, X, MAX_TIME):
     rho0, L= c.RHO_0, c.L
-    delta_x = L / (X - 1)
-    delta_t = MAX_TIME / (T - 1)
+    delta_x = L/(X-1)
+    delta_t = MAX_TIME/(T-1)
     grid_u = func.initialize_grid(T, X, rho0)
     for i in range(1, T):
         time=i*delta_t

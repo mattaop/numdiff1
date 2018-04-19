@@ -97,7 +97,7 @@ def plot_spatial_convergence(solver3,solver4):
 
     plt.figure()
     #plt.loglog(delta_x_list3, conv_3[0], label= r"Upwind")
-    plt.loglog(delta_x_list4, conv_4[0], label= r"Mac Cormack")
+    plt.loglog(delta_x_list4, conv_4[0], label= r"MacCormack")
     plt.title("Convergence plot of "+ r'$\rho$' +" in space")
     plt.xlabel(r'$\Delta x$')
     plt.ylabel("Error")
@@ -108,7 +108,7 @@ def plot_spatial_convergence(solver3,solver4):
 
     plt.figure()
     #plt.loglog(delta_x_list3, conv_3[1], label=r"Upwind")
-    plt.loglog(delta_x_list4, conv_4[1], label=r"Lax-Wendroff")
+    plt.loglog(delta_x_list4, conv_4[1], label=r"MacCormack")
     plt.title("Convergence plot of " + r'$v$' + " in space")
     plt.xlabel(r'$\Delta x$')
     plt.ylabel("Error")
