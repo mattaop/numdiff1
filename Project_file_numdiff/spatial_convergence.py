@@ -7,7 +7,7 @@ import simple_lax_vectorized as slv
 
 
 def spatial_convergence_vec(solver, T, X, MAX_TIME, M):
-    startnumber = 2
+    startnumber = 4
     convergence_list = np.zeros((2, M-startnumber-1))
     u_exact = solver(T, X, MAX_TIME)
     exact_list = u_exact[-1]
@@ -82,8 +82,8 @@ def plot_spatial_convergence_lax(solver1, solver2):
     plt.show()
 
 def plot_spatial_convergence(solver3,solver4):
-    M=11
-    MAX_TIME = 10
+    M=12
+    MAX_TIME = 5
     time_points = 1000
     space_points = 2**M
     delta_t = MAX_TIME/(time_points-1)
@@ -97,7 +97,7 @@ def plot_spatial_convergence(solver3,solver4):
 
     plt.figure()
     #plt.loglog(delta_x_list3, conv_3[0], label= r"Upwind")
-    plt.loglog(delta_x_list4, conv_4[0], label= r"Lax-Wendroff")
+    plt.loglog(delta_x_list4, conv_4[0], label= r"Mac Cormack")
     plt.title("Convergence plot of "+ r'$\rho$' +" in space")
     plt.xlabel(r'$\Delta x$')
     plt.ylabel("Error")

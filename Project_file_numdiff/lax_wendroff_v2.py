@@ -7,7 +7,7 @@ import functions as func
 def u_next_half_step(u_last, delta_t, delta_x, j, time, position):
     return (u_last[j+1] + u_last[j] - delta_t /delta_x*(func.f(u_last[j+1]) - func.f(u_last[j])) \
            + delta_t*func.g(u_last, delta_x, j)
-           + delta_t*func.s(time, position, u_last, j))/2
+           + delta_t/2*(func.s(time, position, u_last, j+1)+func.s(time, position, u_last, j)))/2
 
 
 def u_next_lax_wendroff(u_last, u_halfstep, delta_t, delta_x, j, time, position):
