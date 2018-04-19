@@ -1,20 +1,19 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import constants as c
-import upwind_vectorized_v2 as up
 
 
 
 def spatial_convergence_vec(solver, T, X, delta_t, delta_x,M):
     startnumber = 3
     convergence_list = np.zeros((2, M-startnumber-1))
-    u_exact = up.solve_upwind(T, X, delta_t, delta_x)
+    u_exact = solver(T, X, delta_t, delta_x)
     exact_list = u_exact[-1]
     step_length_list = np.zeros(M -startnumber-1)
 
     for j in range(startnumber,M-1):
 
-        x_points = 2 ** (j + 1)
+        x_points = 2**(j+1)
         new_exact_list = np.zeros((x_points,2))
         ratio = (len(exact_list) - 1) / (x_points - 1)
         for h in range(x_points):
@@ -75,19 +74,23 @@ def plot_spatial_convergence_lax(solver1, solver2):
     plt.legend()
     plt.show()
 
-def plot_spatial_convergence(solver3,solver4):
+def plot_general_convergence(solver1, solver2, solver3,solver4):
     M=10
     time_points = 1000
     space_points = 2**M
     delta_t = 0.01
     delta_x = c.L / (space_points - 1)
 
-    #delta_x_list3, conv_3 = spatial_convergence_vec(solver3, time_points, space_points, delta_t, delta_x, M)
+    delta_x_list1, conv_1 = spatial_convergence_vec(solver1, time_points, space_points, delta_t, delta_x, M)
+    delta_x_list2, conv_2 = spatial_convergence_vec(solver2, time_points, space_points, delta_t, delta_x, M)
+    delta_x_list3, conv_3 = spatial_convergence_vec(solver3, time_points, space_points, delta_t, delta_x, M)
     delta_x_list4, conv_4 = spatial_convergence_vec(solver4, time_points, space_points, delta_t, delta_x, M)
 
     plt.figure()
-    #plt.loglog(delta_x_list3, conv_3[0], label= r"Upwind")
-    plt.loglog(delta_x_list4, conv_4[0], label= r"Lax-Wendroff")
+    plt.loglog(delta_x_list1, conv_3[0], label=r"Lax-Friedrich")
+    plt.loglog(delta_x_list2, conv_3[0], label= r"Upwind")
+    plt.loglog(delta_x_list3, conv_4[0], label= r"Lax-Wendroff")
+    plt.loglog(delta_x_list3, conv_4[0], label=r"MacCormack")
     plt.title("Convergence plot of "+ r'$\rho$' +" in space")
     plt.xlabel(r'$\Delta x$')
     plt.ylabel("Error")
