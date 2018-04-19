@@ -22,7 +22,8 @@ if __name__ == "__main__":
                     2: 'Lax Wendroff',
                     3: 'Time Convergence',
                     4: 'Spatial Convergence',
-                    5: ' 3d plot'
+                    5: 'General Convergence',
+                    6: ' 3d plot'
 
 
 
@@ -58,6 +59,7 @@ if __name__ == "__main__":
     elif Master_Flag=='Spatial Convergence':
         sc.plot_spatial_convergence(sl_v.solve_simple_lax, mc_v2.solve_mac_cormack)
 
+    elif Master_Flag=='Spatial Convergence'
 
     elif Master_Flag==' 3d plot':
         grid_u = sl_v.solve_simple_lax(c.TIME_POINTS, c.SPACE_POINTS, c.delta_t, c.delta_x)

@@ -24,8 +24,10 @@ def one_step_upwind(u_last, X, delta_t, delta_x ,time):
     u_next[X-1]=2*u_next[X-2]-u_next[X-3]
     return u_next
 
-def solve_upwind(T, X, delta_t, delta_x):
+def solve_upwind(T, X, MAX_TIME):
     grid_u = func.initialize_grid(T, X, c.RHO_0)
+    delta_x = c.L/(X-1)
+    delta_t = MAX_TIME/(T-1)
     for i in range(1, T):
         time=i*delta_t
         grid_u[i]=one_step_upwind(grid_u[i-1], X, delta_t, delta_x, time)
@@ -66,7 +68,7 @@ def plot_simple_lax_3d(T,delta_t,X,delta_x,grid_rho,grid_v):
     plt.show()
 
 def main():
-    grid_u = solve_upwind(c.TIME_POINTS, c.SPACE_POINTS, c.delta_t, c.delta_x)
+    grid_u = solve_upwind(c.TIME_POINTS, c.SPACE_POINTS, c.MAX_TIME)
     plot_simple_lax_3d(c.TIME_POINTS,c.delta_t, c.SPACE_POINTS, c.delta_x, grid_u[:,:,0],grid_u[:,:,0])
     #plot_upwind(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,0])
     #plot_upwind(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,1])
