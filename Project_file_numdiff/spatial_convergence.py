@@ -6,10 +6,10 @@ import simple_lax_vectorized as slv
 
 
 
-def spatial_convergence_vec(solver, T, X, delta_t, delta_x,M):
+def spatial_convergence_vec(solver, T, X, delta_t, MAX_TIME, M):
     startnumber = 3
     convergence_list = np.zeros((2, M-startnumber-1))
-    u_exact = slv.solve_simple_lax(T, X, delta_t, delta_x)
+    u_exact = slv.solve_simple_lax(T, X, MAX_TIME)
     exact_list = u_exact[-1]
     step_length_list = np.zeros(M -startnumber-1)
 
@@ -23,7 +23,7 @@ def spatial_convergence_vec(solver, T, X, delta_t, delta_x,M):
 
         delta_x = c.L / (x_points - 1)
         step_length_list[j - startnumber] = delta_x
-        u = solver(c.TIME_POINTS, x_points, delta_t, delta_x)
+        u = solver(c.TIME_POINTS, x_points, MAX_TIME)
         j_list=u[-1]
 
         convergence_list[0][j-startnumber] = np.sqrt(delta_x * delta_t) * np.linalg.norm(new_exact_list[:,0] - j_list[:,0], 2)
@@ -57,9 +57,10 @@ def plot_spatial_convergence_lax(solver1, solver2):
     time_points=100
     space_points=2**M
     delta_t=0.01
+    MAX_TIME = delta_t*time_points
     delta_x=c.L/(space_points-1)
-    #delta_x_list1, conv_1 = spatial_convergence_vec(solver1, time_points,space_points,delta_t, delta_x,M)
-    delta_x_list2, conv_2 = spatial_convergence_vec(solver2, time_points,space_points,delta_t, delta_x,M)
+    #delta_x_list1, conv_1 = spatial_convergence_vec(solver1, time_points,space_points,delta_t, MAX_TIME,M)
+    delta_x_list2, conv_2 = spatial_convergence_vec(solver2, time_points,space_points,delta_t, MAX_TIME,M)
 
     plt.figure()
     #plt.loglog(delta_x_list1, conv_1[0], label= r"Lax-Fredrich")
