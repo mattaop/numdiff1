@@ -8,7 +8,7 @@ import upwind_vectorized_v2 as up
 def spatial_convergence_vec(solver, T, X, delta_t, delta_x,M):
     startnumber = 3
     convergence_list = np.zeros((2, M-startnumber-1))
-    u_exact = up.solve_upwind(T, X, delta_t, delta_x)
+    u_exact = solver(T, X, delta_t, delta_x)
     exact_list = u_exact[-1]
     step_length_list = np.zeros(M -startnumber-1)
 
