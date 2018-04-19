@@ -39,7 +39,7 @@ def plot_lax_friedrichs(T, X, grid_u):
     plt.show()
 
 
-def plot_lax_friedrichs_3d(T, X, MAX_TIME, grid_rho):
+def plot_lax_friedrichs_3d_rho(T, X, MAX_TIME, grid_rho):
     delta_x = c.L / (X - 1)
     delta_t = MAX_TIME / (T - 1)
     fig = plt.figure("Density of cars (car/m)")
