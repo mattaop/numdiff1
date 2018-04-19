@@ -61,11 +61,11 @@ def plot_time_convergence_2(solver1,  solver2, solver3, solver4):
     plt.ylabel("Error")
     plt.legend()
     plt.grid()
-    #plt.savefig("conv_rho_time.pdf")
+    plt.savefig("conv_rho_time.pdf")
     plt.show()
 
     plt.figure()
-    #plt.loglog(delta_t_list1, error_v1, label=r"Lax-Friedrichs")
+    plt.loglog(delta_t_list1, error_v1, label=r"Lax-Friedrichs")
     plt.loglog(delta_t_list2, error_v2, label=r"Upwind")
     plt.loglog(delta_t_list3, error_v3, label=r"Lax-Wendroff")
     plt.loglog(delta_t_list4, error_v4, label=r"MacCormac")
@@ -73,8 +73,8 @@ def plot_time_convergence_2(solver1,  solver2, solver3, solver4):
     plt.xlabel(r'$\Delta t$')
     plt.ylabel("Error")
     plt.grid()
-    #plt.savefig("conv_v_time.pdf")
     plt.legend()
+    plt.savefig("conv_v_time.pdf")
     plt.show()
 
 

@@ -34,7 +34,7 @@ def one_step_lax_wendroff(u_last, X, delta_t, delta_x ,time, rho0, L):
 
 def solve_lax_wendroff(T, X, MAX_TIME):
     rho0, L= c.RHO_0, c.L
-    delta_x = L / (X - 1)
+    delta_x = L/(X-1)
     delta_t = MAX_TIME / (T - 1)
     grid_u = func.initialize_grid(T, X, rho0)
     for i in range(1, T):
@@ -42,7 +42,8 @@ def solve_lax_wendroff(T, X, MAX_TIME):
         grid_u[i]=one_step_lax_wendroff(grid_u[i-1], X, delta_t, delta_x, time, rho0, L)
     return grid_u
 
-def plot_lax_wendroff(T, X, delta_x, grid_u):
+def plot_lax_wendroff(T, X, grid_u):
+    delta_x = c.L/(X-1)
     x = np.linspace(-X / 2 * delta_x, X / 2 * delta_x, X)
     plt.figure()
     plt.plot(x,grid_u[T-1])
@@ -50,6 +51,5 @@ def plot_lax_wendroff(T, X, delta_x, grid_u):
 
 def main():
     grid_u = solve_lax_wendroff(c.TIME_POINTS, c.SPACE_POINTS, c.MAX_TIME)
-    plot_lax_wendroff(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,0])
-    plot_lax_wendroff(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:,:,1])
-#main()
+    plot_lax_wendroff(c.TIME_POINTS, c.SPACE_POINTS, grid_u[:,:,0])
+    plot_lax_wendroff(c.TIME_POINTS, c.SPACE_POINTS, grid_u[:,:,1])
