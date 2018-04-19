@@ -32,7 +32,8 @@ def solve_lax_friedrichs(T, X, MAX_TIME):
         grid_u[i]=one_step_lax_friedrichs(grid_u[i-1], X, delta_t, delta_x, time)
     return grid_u
 
-def plot_lax_friedrichs(T, X, delta_x, grid_u):
+def plot_lax_friedrichs(T, X, grid_u):
+    delta_x = c.L/(X-1)
     x=np.linspace(-X/2*delta_x,X/2*delta_x,X)
     plt.figure()
     plt.plot(x,grid_u[T-1])
