@@ -40,15 +40,11 @@ def plot_lax_friedrichs(T, X, grid_u):
     plt.show()
 
 
-<<<<<<< HEAD
-def plot_lax_friedrichs_3d(T, X, MAX_TIME, grid_rho, grid_v):
+def plot_lax_friedrichs_3d(T, X, MAX_TIME, grid_rho):
     delta_x = c.L / (X - 1)
     delta_t = MAX_TIME / (T - 1)
-    fig = plt.figure()
-=======
-def plot_lax_friedrichs_3d_rho(T,delta_t,X,delta_x,grid_rho):
     fig = plt.figure("Density of cars (car/m)")
->>>>>>> 8fff649dc75a57ec0fc6e141fa19de5772510120
+
     ax = fig.gca(projection='3d')
     x=np.arange(-X*delta_x/2,X*delta_x/2,delta_x)
     y=np.arange(0,T*delta_t,delta_t)
@@ -61,14 +57,10 @@ def plot_lax_friedrichs_3d_rho(T,delta_t,X,delta_x,grid_rho):
     fig.colorbar(surf,shrink=0.5)
     plt.show()
 
-<<<<<<< HEAD
+
 def plot_lax_friedrichs2_3d_v(T, X, MAX_TIME, grid_v):
     delta_x = c.L / (X - 1)
     delta_t = MAX_TIME / (T - 1)
-=======
-
-def plot_lax_friedrichs_3d_v(T,delta_t,X,delta_x,grid_v):
->>>>>>> 8fff649dc75a57ec0fc6e141fa19de5772510120
     fig = plt.figure("Speed of cars (m/s)")
     ax = fig.gca(projection='3d')
     x=np.arange(-X*delta_x/2,X*delta_x/2,delta_x)
