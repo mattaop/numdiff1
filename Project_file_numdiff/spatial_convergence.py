@@ -9,7 +9,7 @@ import simple_lax_vectorized as slv
 def spatial_convergence_vec(solver, T, X, delta_t, MAX_TIME, M):
     startnumber = 3
     convergence_list = np.zeros((2, M-startnumber-1))
-    u_exact = slv.solve_simple_lax(T, X, MAX_TIME)
+    u_exact = solver(T, X, MAX_TIME)
     exact_list = u_exact[-1]
     step_length_list = np.zeros(M -startnumber-1)
 
