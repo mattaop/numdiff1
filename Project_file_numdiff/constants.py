@@ -1,7 +1,7 @@
 import numpy as np
 
 M = 12
-MAX_TIME = 500*60 #seconds
+MAX_TIME = 60 #seconds
 TIME_POINTS = 1000
 
 SPACE_POINTS = 2**(M)
