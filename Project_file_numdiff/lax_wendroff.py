@@ -4,22 +4,18 @@ import constants as c
 import functions as func
 
 
-def f(u_last):
-    f_step = np.zeros(2)
-    f_step[:] = u_last[0]*u_last[1], (u_last[1]**2)/2 + c.C**2*np.log(u_last[0])
-    return f_step
-
-
 def u_next_half_step(u_last, delta_t, delta_x, j, time, position):
-    return (u_last[j+1] + u_last[j] - delta_t /delta_x*(f(u_last[j+1]) - f(u_last[j])) \
+    return (u_last[j+1] + u_last[j] - delta_t /delta_x*(func.f2(u_last[j+1]) - func.f2(u_last[j])) \
+           + delta_t*func.g2(u_last, delta_x, j)\
            + delta_t/2*(func.s(time, position, u_last, j+1)\
            +func.s(time, position, u_last, j)))/2
 
 
 def u_next_lax_wendroff(u_last, u_halfstep, delta_t, delta_x, j, time, position):
     u_halfstep[j] = u_next_half_step(u_last, delta_t, delta_x, j, time, position)
-    return u_last[j] - delta_t/delta_x*(f(u_halfstep[j])-f(u_halfstep[j-1])) \
-           + (delta_t/2)*(func.s(time, position, u_halfstep, j)+func.s(time, position, u_halfstep, j-1))
+    return u_last[j] - delta_t/delta_x*(func.f2(u_halfstep[j])-func.f2(u_halfstep[j-1])) \
+           + delta_t*func.g2(u_halfstep, delta_x, j)\
+           +(delta_t/2)*(func.s(time, position, u_halfstep, j)+func.s(time, position, u_halfstep, j-1))
 
 def one_step_lax_wendroff(u_last, X, delta_t, delta_x ,time, rho0, L):
     u_next = np.zeros((X,2))

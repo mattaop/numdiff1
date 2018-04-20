@@ -4,16 +4,18 @@ from mpl_toolkits.mplot3d import Axes3D
 import constants as c
 import functions as func
 from matplotlib import cm
+from time import time
 
 
 def u_next_lax_friedrichs(u_last, delta_t, delta_x, j, time, position):
-    return (u_last[j+1]+u_last[j-1])/2 - delta_t/(2*delta_x)*(func.f(u_last[j+1])-func.f(u_last[j-1])) \
-           + delta_t*func.g(u_last, delta_x, j)\
+    return (u_last[j+1]+u_last[j-1])/2 - delta_t/(2*delta_x)*(func.f2(u_last[j+1])-func.f2(u_last[j-1])) \
+           + delta_t*func.g2(u_last, delta_x, j)\
            + delta_t*func.s(time, position, u_last, j)
 
 def one_step_lax_friedrichs(u_last, X, delta_t, delta_x ,time):
     u_next = np.zeros((X,2))
     u_next[0,:] = c.RHO_0, func.safe_v(c.RHO_0)
+    u_next[0,:]=u_last[1][0],func.safe_v(u_last[1][0])
     for j in range(1,X-1):
         position=j*delta_x-c.L/2
         u_next[j] = u_next_lax_friedrichs(u_last, delta_t, delta_x, j, time, position)
@@ -35,15 +37,15 @@ def plot_lax_friedrichs(T, X, grid_u):
     delta_x = c.L/(X-1)
     x=np.linspace(-X/2*delta_x,X/2*delta_x,X)
     plt.figure()
-    plt.plot(x,grid_u[T-1])
+    plt.plot(x,grid_u[T-1][0])
     plt.show()
+    plt.plot(x,grid_u[T-1][1])
 
 
 def plot_lax_friedrichs_3d_rho(T, X, MAX_TIME, grid_rho):
-    delta_x = c.L / (X - 1)
-    delta_t = MAX_TIME / (T - 1)
+    delta_x = c.L/(X-1)
+    delta_t = MAX_TIME/(T-1)
     fig = plt.figure("Density of cars (car/m)")
-
     ax = fig.gca(projection='3d')
     x=np.arange(-X*delta_x/2,X*delta_x/2,delta_x)
     y=np.arange(0,T*delta_t,delta_t)
@@ -56,8 +58,7 @@ def plot_lax_friedrichs_3d_rho(T, X, MAX_TIME, grid_rho):
     fig.colorbar(surf,shrink=0.5)
     plt.show()
 
-
-def plot_lax_friedrichs2_3d_v(T, X, MAX_TIME, grid_v):
+def plot_lax_friedrichs_3d_v(T, X, MAX_TIME, grid_v):
     delta_x = c.L / (X - 1)
     delta_t = MAX_TIME / (T - 1)
     fig = plt.figure("Speed of cars (m/s)")
@@ -72,6 +73,17 @@ def plot_lax_friedrichs2_3d_v(T, X, MAX_TIME, grid_v):
     ax.set_zlabel("Speed (m/s)")
     fig.colorbar(surf,shrink=0.5)
     plt.show()
+
+
+
+
+
+def main():
+    grid_u = solve_lax_friedrichs(c.TIME_POINTS, c.SPACE_POINTS, c.MAX_TIME)
+    plot_lax_friedrichs(c.TIME_POINTS, c.SPACE_POINTS, grid_u[:,:,0])
+    #plot_lax_friedrichs(c.TIME_POINTS, c.SPACE_POINTS, grid_u[:,:,1])
+
+#main()
 
 
 
