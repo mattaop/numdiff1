@@ -20,7 +20,7 @@ if __name__ == "__main__":
                     5: 'Spatial Convergence',
 
 
-            }[5]        #<-------Write number of the function you want to test.
+            }[3]        #<-------Write number of the function you want to test.
 
 
     if Master_Flag =='Lax-Friedrichs':

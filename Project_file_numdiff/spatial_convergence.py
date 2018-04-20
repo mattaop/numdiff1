@@ -22,46 +22,10 @@ def spatial_convergence_vec(solver, T, X, MAX_TIME, M, startnumber):
         j_list=u[-1]
         convergence_list[0][j-startnumber] = np.sqrt(delta_x) * np.linalg.norm(new_exact_list[:,0] - j_list[:,0], 2)
         convergence_list[1][j-startnumber] = np.sqrt(delta_x) * np.linalg.norm(new_exact_list[:,1] - j_list[:,1], 2)
-        #x = np.linspace(-2500,2500, x_points)
-        #plt.figure()
-        #plt.plot(x, j_list[:,0], label='Test')
-        #plt.plot(x, new_exact_list[:, 0], label='Exact')
-        #plt.legend()
-        #plt.show()
         print("Points: ", x_points)
 
     return step_length_list,convergence_list
 
-def plot_spatial_convergence_lax(solver1, solver2):
-    M=14
-    time_points=100
-    space_points=2**M
-    delta_t=0.01
-    MAX_TIME = delta_t*time_points
-
-    delta_x=c.L/(space_points-1)
-    #delta_x_list1, conv_1 = spatial_convergence_vec(solver1, time_points,space_points,delta_t, MAX_TIME,M)
-    delta_x_list2, conv_2 = spatial_convergence_vec(solver2, time_points, space_points, MAX_TIME, M)
-
-    plt.figure()
-    #plt.loglog(delta_x_list1, conv_1[0], label= r"Lax-Fredrich")
-    plt.loglog(delta_x_list2, conv_2[0], label= r"Lax-Fredrich v2")
-    plt.title("Convergence plot of "+ r'$\rho$' +" in space")
-    plt.xlabel(r'$\Delta x$')
-    plt.ylabel("Error")
-    plt.legend()
-    plt.savefig("conv_rho_space_lax.pdf")
-    plt.show()
-
-    plt.figure()
-    #plt.loglog(delta_x_list1, conv_1[1], label=r"Lax-Fredrich")
-    plt.loglog(delta_x_list2, conv_2[1], label=r"Lax-Fredrich v2")
-    plt.title("Convergence plot of " + r'$v$' + " in space")
-    plt.xlabel(r'$\Delta x$')
-    plt.ylabel("Error")
-    plt.savefig("conv_v_space_lax.pdf")
-    plt.legend()
-    plt.show()
 
 def plot_spatial_convergence(solver1, solver2, solver3,solver4):
     M = 10
@@ -106,7 +70,7 @@ def plot_spatial_convergence(solver1, solver2, solver3,solver4):
     plt.ylabel("Error")
     plt.legend()
     plt.grid()
-    plt.savefig("conv_rho_space.pdf")
+    #plt.savefig("conv_rho_space.pdf")
     plt.show()
 
     plt.figure()
@@ -119,6 +83,6 @@ def plot_spatial_convergence(solver1, solver2, solver3,solver4):
     plt.ylabel("Error")
     plt.legend()
     plt.grid()
-    plt.savefig("conv_v_space.pdf")
+    #plt.savefig("conv_v_space.pdf")
     plt.show()
 

@@ -75,38 +75,3 @@ def plot_lax_friedrichs_3d_v(T, X, MAX_TIME, grid_v):
     plt.show()
 
 
-
-
-
-def main():
-    grid_u = solve_lax_friedrichs(c.TIME_POINTS, c.SPACE_POINTS, c.MAX_TIME)
-    plot_lax_friedrichs(c.TIME_POINTS, c.SPACE_POINTS, grid_u[:,:,0])
-    #plot_lax_friedrichs(c.TIME_POINTS, c.SPACE_POINTS, grid_u[:,:,1])
-
-#main()
-
-
-
-def plot_lax_friedrichs2_3d_rho(T, X, MAX_TIME, grid_rho):
-    delta_x = c.L/(X-1)
-    delta_t = MAX_TIME/(T-1)
-    fig = plt.figure("Density of cars (car/m)")
-    ax = fig.gca(projection='3d')
-    x=np.arange(-X*delta_x/2,X*delta_x/2,delta_x)
-    y=np.arange(0,T*delta_t,delta_t)
-    x,y=np.meshgrid(x,y)
-    surf=ax.plot_surface(x,y,grid_rho,cmap=cm.coolwarm,linewidth=0)
-    ax.text2D(0.05, 0.95, "Density of cars (car/m)", transform=ax.transAxes)
-    ax.set_xlabel("Distance (m)")
-    ax.set_ylabel("Time (s)")
-    ax.set_zlabel("Density (car/m)")
-    fig.colorbar(surf,shrink=0.5)
-    plt.show()
-
-
-def main():
-    grid_u = solve_lax_friedrichs(c.TIME_POINTS, c.SPACE_POINTS, c.MAX_TIME)
-    plot_lax_friedrichs(c.TIME_POINTS, c.SPACE_POINTS, grid_u[:,:,0])
-    #plot_lax_friedrichs(c.TIME_POINTS, c.SPACE_POINTS, grid_u[:,:,1])
-
-#main()

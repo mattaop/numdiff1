@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import constants as c
 import functions as func
 from matplotlib import cm
+from mpl_toolkits.mplot3d import Axes3D
+
 
 def u_approx_mac_cormack(u_last, delta_t, delta_x, j, time, position):
     return u_last[j] - delta_t/delta_x*(func.f(u_last[j]) - func.f(u_last[j-1])) \
@@ -78,9 +80,3 @@ def plot_mac_cormack_3d_v(T, X, MAX_TIME, grid_v):
 
 
 
-def main():
-    grid_u = solve_mac_cormack(c.TIME_POINTS, c.SPACE_POINTS, c.MAX_TIME)
-    plot_mac_cormack(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:, :, 0])
-    plot_mac_cormack(c.TIME_POINTS, c.SPACE_POINTS, c.delta_x, grid_u[:, :, 1])
-
-#main()

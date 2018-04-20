@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import constants as c
 import functions as func
 from matplotlib import cm
+from mpl_toolkits.mplot3d import Axes3D
+
 
 def u_next_half_step(u_last, delta_t, delta_x, j, time, position):
     return (u_last[j+1] + u_last[j] - delta_t /delta_x*(func.f2(u_last[j+1]) - func.f2(u_last[j])) \
@@ -75,9 +77,3 @@ def plot_lax_wendroff_3d_v(T, X, MAX_TIME, grid_v):
     ax.set_zlabel("Speed (m/s)")
     #plt.savefig("lx_3d_v.pdf")
     plt.show()
-
-
-def main():
-    grid_u = solve_lax_wendroff(c.TIME_POINTS, c.SPACE_POINTS, c.MAX_TIME)
-    plot_lax_wendroff(c.TIME_POINTS, c.SPACE_POINTS, grid_u[:,:,0])
-    plot_lax_wendroff(c.TIME_POINTS, c.SPACE_POINTS, grid_u[:,:,1])
