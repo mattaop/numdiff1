@@ -64,18 +64,7 @@ def plot_spatial_convergence_lax(solver1, solver2):
     plt.show()
 
 def plot_spatial_convergence(solver1, solver2, solver3,solver4):
-    #M = 10
-    #MAX_TIME = 5
-    #time_points = 500
-    #space_points = 2 ** M
-    #m = 3
-    #delta_t = MAX_TIME/(time_points-1)
-    #delta_x = c.L/(space_points-1)
-    #print("delta_t: ", delta_t)
-    #print("delta_x: ", delta_x)
-    #print("CFL-condition: delta_t = ", delta_t, " < ", delta_x/(c.V0+c.C), " = delta_x/(V0+C)")
-
-    M = 14
+    M = 10
     m = 6
     MAX_TIME = 1
     time_points = 100
@@ -83,7 +72,7 @@ def plot_spatial_convergence(solver1, solver2, solver3,solver4):
 
     delta_x_list1, conv_1 = spatial_convergence_vec(solver1, time_points, space_points, MAX_TIME, M, m)
 
-    M = 12
+    M = 8
     m = 3
     MAX_TIME = 40
     time_points = 2000
@@ -91,7 +80,7 @@ def plot_spatial_convergence(solver1, solver2, solver3,solver4):
 
     delta_x_list2, conv_2 = spatial_convergence_vec(solver2, time_points, space_points, MAX_TIME, M, m)
 
-    M = 10
+    M = 8
     m = 3
     MAX_TIME = 160
     time_points = 1000
@@ -99,7 +88,7 @@ def plot_spatial_convergence(solver1, solver2, solver3,solver4):
 
     delta_x_list3, conv_3 = spatial_convergence_vec(solver3, time_points, space_points, MAX_TIME, M, m)
 
-    M = 15
+    M = 10
     m = 3
     MAX_TIME = 1
     time_points = 800
